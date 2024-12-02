@@ -21,11 +21,13 @@
     "module": "commonjs",
     "baseUrl": ".",
     "target": "es6",
+    "outDir": "dist",
     "noImplicitAny": true,
     "moduleResolution": "node",
     "paths": {
       "*": ["node_modules/*", "src/types/*"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test.*"]
 }

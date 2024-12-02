@@ -1,4 +1,4 @@
-import type { LocationId } from "../types/location-id";
+export type LocationId = number;
 
 export const calcDifference = (left: Array<LocationId>, right: Array<LocationId>) => {
   return left.reduce((acc, cur, idx) => {

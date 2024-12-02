@@ -1,6 +1,5 @@
 import fs from 'fs';
-import { calcDifference, calcSimilarity, parseLocationId } from './utils/locationId';
-import type { LocationId } from './types/location-id';
+import { calcDifference, calcSimilarity, type LocationId, parseLocationId } from './utils/locationId';
 
 (() => {
   const left: Array<LocationId> = [];
