@@ -5,6 +5,8 @@ export type Report = {
     levels: Array<Level>
 };
 
+const parseLevel = (string: string) => parseInt(string);
+
 export const loadFromFile = (file: string): Array<Report> => {
     const data: Array<Report> = [];
 
@@ -49,5 +51,3 @@ export const isSafeWithDampener = (report: Report): boolean => {
 
     return safe;
 }
-
-const parseLevel = (string: string) => parseInt(string);
