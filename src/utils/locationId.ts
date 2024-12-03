@@ -2,17 +2,7 @@ import fs from 'fs';
 
 export type LocationId = number;
 
-export const calcDifference = (left: Array<LocationId>, right: Array<LocationId>): number => {
-  return left.reduce((acc, cur, idx) => {
-    return acc += Math.abs(cur - right[idx]);
-  }, 0);
-}
-
-export const calcSimilarity = (left: Array<LocationId>, right: Array<LocationId>): number => {
-  return left.reduce((acc, cur) => {
-    return acc += cur * right.filter(id => id == cur).length;
-  }, 0);
-}
+const parseLocationId = (string: string) => parseInt(string);
 
 export const loadFromFile= (file: string): Array<Array<LocationId>> => {
   const left: Array<LocationId> = [];
@@ -29,4 +19,14 @@ export const loadFromFile= (file: string): Array<Array<LocationId>> => {
   return [[...left], [...right]];
 }
 
-const parseLocationId = (string: string) => parseInt(string);
+export const calcDifference = (left: Array<LocationId>, right: Array<LocationId>): number => {
+  return left.reduce((acc, cur, idx) => {
+    return acc += Math.abs(cur - right[idx]);
+  }, 0);
+}
+
+export const calcSimilarity = (left: Array<LocationId>, right: Array<LocationId>): number => {
+  return left.reduce((acc, cur) => {
+    return acc += cur * right.filter(id => id == cur).length;
+  }, 0);
+}

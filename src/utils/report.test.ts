@@ -1,11 +1,13 @@
 import { isSafe, isSafeWithDampener, loadFromFile } from "./report";
 
-const reports = [{ levels: [7,6,4,2,1] },
+const reports = [
+    { levels: [7,6,4,2,1] },
     { levels: [1,2,7,8,9] },
     { levels: [9,7,6,2,1] },
     { levels: [1,3,2,4,5] },
     { levels: [8,6,4,4,1] },
-    { levels: [1,3,6,7,9] }];
+    { levels: [1,3,6,7,9] }
+];
 
 describe('report utils', () => {
     describe('function loadFromFile', () => {
