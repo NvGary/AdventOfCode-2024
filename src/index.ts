@@ -1,6 +1,8 @@
 import { calcDifference, calcSimilarity, loadFromFile as loadLocationIdsFromFile } from './utils/locationId';
-import { calculateMuls, loadFromFile } from './utils/mul';
+import { calculateMuls, loadFromFile as loadMulsFromFile } from './utils/mul';
 import { isSafe, isSafeWithDampener, loadFromFile as loadReportsFromFile } from './utils/report';
+import { loadFromFile, search } from './utils/word-search';
+import { search as searchX } from './utils/x-mas';
 
 const day1 = () => {
   console.log('-- DAY 1 --');
@@ -28,13 +30,24 @@ const day3 = () => {
   console.log('-- DAY 3 --');
 
   // 191183308
-  console.log(`Multiplication results (commands disabled): ${calculateMuls(loadFromFile('./lib/muls.txt', false))}`);
+  console.log(`Multiplication results (commands disabled): ${calculateMuls(loadMulsFromFile('./lib/muls.txt', false))}`);
   // 92082041
-  console.log(`Multiplication results (commands enabled): ${calculateMuls(loadFromFile('./lib/muls.txt'))}`);
+  console.log(`Multiplication results (commands enabled): ${calculateMuls(loadMulsFromFile('./lib/muls.txt'))}`);
+}
+
+const day4 = () => {
+  console.log('-- DAY 4 --');
+
+  const grid = loadFromFile('./lib/word-search.txt');
+  // 2554
+  console.log(`XMAS appears in word search (occurence count): ${search(grid, 'XMAS')}`);
+  // 1916
+  console.log(`X-MAS appears in word search (occurence count): ${searchX(grid, 'MAS')}`);
 }
 
 (() => {
   day1();
   day2();
   day3();
+  day4();
 })();
