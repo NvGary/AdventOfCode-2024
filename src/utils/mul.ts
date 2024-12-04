@@ -1,4 +1,4 @@
-import fs from 'fs';
+import { readFileByLine } from "./fs";;
 
 type Digit = number;
 export type Mul = { digits: Array<Digit> };
@@ -51,22 +51,13 @@ class CommandParser {
 }
 
 export const loadFromFile = (file: string, enableCommands: boolean = true): Array<Mul> => {
-    const data: Array<Mul> = [];
-
     const parser = new CommandParser();
 
-    fs.readFileSync(file, 'utf-8').split(/\r?\n/).forEach(((line: string) => {
-      if (line.length> 0) {
-        (enableCommands ? parser.findMulCandidates.bind(parser) : findMulCandidates)(line).forEach(c => {
-            const digits: Mul['digits'] = parseDigits(c);
-            if (digits.length === 2) {
-                data.push({ digits });
-            }
-        });
-      }
-    }));
-
-    return data;
+    return readFileByLine<Array<Mul>>(file, (line: string) =>
+        (enableCommands ? parser.findMulCandidates.bind(parser) : findMulCandidates)(line).map(c =>
+            ({ digits: parseDigits(c) }) as Mul)
+        ).filter(({ digits }) =>
+            digits.length === 2);
 }
 
 export const calculateMuls = (data: Array<Mul>): number => {
