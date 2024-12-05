@@ -1,16 +1,16 @@
 import fs from 'fs';
 
 export type Level = number;
-export type Report = {
-    levels: Array<Level>
-};
+export interface Report {
+    levels: Level[]
+}
 
-const parseLevel = (string: string) => parseInt(string);
+const parseLevel = (string: string) => parseInt(string, 10);
 
-export const loadFromFile = (file: string): Array<Report> => {
-    const data: Array<Report> = [];
+export const loadFromFile = (file: string): Report[] => {
+    const data: Report[] = [];
 
-    fs.readFileSync(file, 'utf-8').split(/\r?\n/).forEach(((line: string) => {
+    fs.readFileSync(file, 'utf-8').split(/\r?\n/u).forEach(((line: string) => {
       if (line.length> 0) {
         data.push({ levels: line.split(' ').map(parseLevel) });
       }
@@ -41,8 +41,7 @@ export const isSafe = (report: Report): boolean => {
 }
 
 export const isSafeWithDampener = (report: Report): boolean => {
-    let safe = isSafe(report);
-    let attempted = 0;
+    let attempted = 0, safe = isSafe(report);
 
     while (safe === false && attempted < report.levels.length) {
         safe = isSafe({ levels: report.levels.filter((_, idx) => idx !== attempted) });

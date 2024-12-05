@@ -18,7 +18,26 @@ export default tseslint.config(
   },
   {
     // enable jest rules on test files
-    files: ['test/**'],
+    files: ['**/*.test.ts'],
     extends: [jestPlugin.configs['flat/recommended']],
   },
+  {
+    // custom rules
+    rules: {
+      "array-callback-return": "error",
+      "curly": "error",
+      "eqeqeq": "error",
+      "max-statements": "error",
+      "no-eval": "error",
+      "no-useless-assignment": "error",
+      "no-useless-return": "warn",
+      "no-unused-vars": "off",
+      "prefer-const": "error",
+      "prefer-destructuring": "warn",
+      "radix": "warn",
+      "sort-imports": "warn",
+      "sort-vars": "error",
+      "@typescript-eslint/no-unused-vars": ["error"],
+    }
+  }
 );

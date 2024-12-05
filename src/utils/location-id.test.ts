@@ -1,7 +1,7 @@
-import { calcDifference, calcSimilarity, loadFromFile } from "./locationId";
+import { calcDifference, calcSimilarity, loadFromFile } from './location-id';
 
-const left = [3,4,2,1,3,3];
-const right = [4,3,5,3,9,3];
+const left = [3,4,2,1,3,3],
+ right = [4,3,5,3,9,3];
 
 describe('locationId utils', () => {
     describe('function loadFromFile', () => {
