@@ -51,34 +51,6 @@ export const calculateProductionTotals = (production: PrintQueue['production']):
     }, 0);
 }
 
-// const _correctOrdering = (production: PrintQueue['production'][number], ordering: PrintQueue['ordering']): PrintQueue['production'][number] => {
-//     console.log({ fn: '_correctOrdering', production });
-//     const res: PrintQueue['production'][number] = [];
-//     const data = Array.from(production);
-//     let [lPage,rPage] = data.splice(0, 2);
-//     let abort = false;
-
-//     console.log({ lPage, rPage, abort });
-//     while (!abort && rPage) {
-//         if (ordering.some(([l,r]) => lPage === l && rPage === r)) {
-//             res.push(lPage);
-//             data.unshift(rPage);
-//             [lPage,rPage] = data.splice(0, 2);
-//         } else if (ordering.some(([r,l]) => lPage === l && rPage === r)) {
-//             res.push(rPage);
-//             data.unshift(lPage);
-//             [lPage,rPage] = data.splice(0, 2);
-//         } else {
-//             abort = true;
-//             res.push(lPage);
-//             data.unshift(rPage);
-//         }
-//     }
-
-//     console.log({ fn: '_corrrectOrdering', res, data });
-//     return [...res, ...data];
-// }
-
 const _correctOrdering = (production: PrintQueue['production'][number], ordering: PrintQueue['ordering']): PrintQueue['production'][number] => {
     return production.sort((a,b) => ordering.some(([l,r]) => a === l && b === r) ? -1 : ordering.some(([r,l]) => a === l && b === r) ? 1: 0)
 }
