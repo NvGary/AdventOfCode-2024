@@ -1,12 +1,12 @@
 import fs from 'fs';
 
 type Letter = string;
-type Grid = Array<Array<Letter>>;
+type Grid = Letter[][];
 
 export const loadFromFile = (file: string): Grid => {
     const data: Grid = [];
 
-    fs.readFileSync(file, 'utf-8').split(/\r?\n/).forEach(((line: string) => {
+    fs.readFileSync(file, 'utf-8').split(/\r?\n/u).forEach(((line: string) => {
       if (line.length> 0) {
         data.push(Array.from(line));
       }
@@ -15,22 +15,9 @@ export const loadFromFile = (file: string): Grid => {
     return data;
 }
 
-export const search = (grid: Grid, word: string): number => {
-    const l = word.charAt(0);
-    let counter = 0;
-    for (let i = 0; i < grid.length; ++i) {
-        for (let j =0; j < grid[i].length; ++j) {
-            if (grid[i][j] === l) {
-                counter += match(grid, {i, j}, word);
-            }
-        }
-    }
+interface Coords { i: number, j: number }
 
-    return counter
-}
-
-type Coords = { i: number, j: number };
-
+// eslint-disable-next-line max-statements
 const match = (grid: Grid, { i, j }: Coords, word: string): number => {
     const matches: Letter[][] = []
 
@@ -70,4 +57,18 @@ const match = (grid: Grid, { i, j }: Coords, word: string): number => {
     }
 
     return matches.filter(c => c.join('') === word).length;
+}
+
+export const search = (grid: Grid, word: string): number => {
+    const l = word.charAt(0);
+    let counter = 0;
+    for (let i = 0; i < grid.length; ++i) {
+        for (let j =0; j < grid[i].length; ++j) {
+            if (grid[i][j] === l) {
+                counter += match(grid, {i, j}, word);
+            }
+        }
+    }
+
+    return counter
 }

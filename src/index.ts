@@ -1,4 +1,4 @@
-import { calcDifference, calcSimilarity, loadFromFile as loadLocationIdsFromFile } from './utils/locationId';
+import { calcDifference, calcSimilarity, loadFromFile as loadLocationIdsFromFile } from './utils/location-id';
 import { calculateMuls, loadFromFile as loadMulsFromFile } from './utils/mul';
 import { isSafe, isSafeWithDampener, loadFromFile as loadReportsFromFile } from './utils/report';
 import { loadFromFile, search } from './utils/word-search';
@@ -13,9 +13,9 @@ const day1 = () => {
   console.log(`Location Id difference is: ${calcDifference(left.sort(), right.sort())}`);
   // 26859182
   console.log(`Location Id similarity is: ${calcSimilarity(left, right)}`);
-}
+},
 
-const day2 = () => {
+ day2 = () => {
   console.log('-- DAY 2 --');
 
   const reports = loadReportsFromFile('./lib/reports.txt');
@@ -24,18 +24,18 @@ const day2 = () => {
   console.log(`Safe report count: ${reports.map(isSafe).filter(res => res).length}`);
   // 566
   console.log(`Safe (with dampener) report count: ${reports.map(isSafeWithDampener).filter(res => res).length}`);
-}
+},
 
-const day3 = () => {
+ day3 = () => {
   console.log('-- DAY 3 --');
 
   // 191183308
   console.log(`Multiplication results (commands disabled): ${calculateMuls(loadMulsFromFile('./lib/muls.txt', false))}`);
   // 92082041
   console.log(`Multiplication results (commands enabled): ${calculateMuls(loadMulsFromFile('./lib/muls.txt'))}`);
-}
+},
 
-const day4 = () => {
+ day4 = () => {
   console.log('-- DAY 4 --');
 
   const grid = loadFromFile('./lib/word-search.txt');

@@ -19,36 +19,39 @@ describe('report utils', () => {
     });
 
     describe('function isSafe', () => {
-        it('correctly determines safety status', () => {
-            expect(isSafe(reports[0])).toBe(true);
-            expect(isSafe(reports[1])).toBe(false);
-            expect(isSafe(reports[2])).toBe(false);
-            expect(isSafe(reports[3])).toBe(false);
-            expect(isSafe(reports[4])).toBe(false);
-            expect(isSafe(reports[5])).toBe(true);
+        it.each`
+            data | result
+            ${reports[0]} | ${true}
+            ${reports[1]} | ${false}
+            ${reports[2]} | ${false}
+            ${reports[3]} | ${false}
+            ${reports[4]} | ${false}
+            ${reports[5]} | ${true}
+        `('correctly determines safety status', ({ data, result }) => {
+            expect(isSafe(data)).toBe(result);
         });
     });
 
     describe('function isSafeWithDampener', () => {
-        it('correctly determines safety status', () => {
-            expect(isSafeWithDampener(reports[0])).toBe(true);
-            expect(isSafeWithDampener(reports[1])).toBe(false);
-            expect(isSafeWithDampener(reports[2])).toBe(false);
-            expect(isSafeWithDampener(reports[3])).toBe(true);
-            expect(isSafeWithDampener(reports[4])).toBe(true);
-            expect(isSafeWithDampener(reports[5])).toBe(true);
-
-            expect(isSafeWithDampener({ levels: [1,1,2,3,4,5] })).toBe(true);
-            expect(isSafeWithDampener({ levels: [1,2,3,3,4,5] })).toBe(true);
-            expect(isSafeWithDampener({ levels: [1,2,3,4,5,5] })).toBe(true);
-
-            expect(isSafeWithDampener({ levels: [10,1,2,3,4,5] })).toBe(true);
-            expect(isSafeWithDampener({ levels: [1,2,3,10,4,5] })).toBe(true);
-            expect(isSafeWithDampener({ levels: [1,2,3,4,5,10] })).toBe(true);
-
-            expect(isSafeWithDampener({ levels: [2,1,2,3,4,5] })).toBe(true);
-            expect(isSafeWithDampener({ levels: [1,2,3,2,4,5] })).toBe(true);
-            expect(isSafeWithDampener({ levels: [1,2,3,4,5,4] })).toBe(true);
+        it.each`
+            data | result
+            ${reports[0]} | ${true}
+            ${reports[1]} | ${false}
+            ${reports[2]} | ${false}
+            ${reports[3]} | ${true}
+            ${reports[4]} | ${true}
+            ${reports[5]} | ${true}
+            ${{ levels: [1,1,2,3,4,5] }} | ${true}
+            ${{ levels: [1,2,3,3,4,5] }} | ${true}
+            ${{ levels: [1,2,3,4,5,5] }} | ${true}
+            ${{ levels: [10,1,2,3,4,5] }} | ${true}
+            ${{ levels: [1,2,3,10,4,5] }} | ${true}
+            ${{ levels: [1,2,3,4,5,10] }} | ${true}
+            ${{ levels: [2,1,2,3,4,5] }} | ${true}
+            ${{ levels: [1,2,3,2,4,5] }} | ${true}
+            ${{ levels: [1,2,3,4,5,4] }} | ${true}
+        `('correctly determines safety status', ({ data, result }) => {
+            expect(isSafeWithDampener(data)).toBe(result);
         });
     });
 });
