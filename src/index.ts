@@ -1,11 +1,12 @@
 import { calcDifference, calcSimilarity, loadFromFile as loadLocationIdsFromFile } from './utils/location-id';
 import { calculateMuls, loadFromFile as loadMulsFromFile } from './utils/mul';
+import { calculateProductionTotals, correctOrdering, hasCorrectOrdering, loadFromFile } from './utils/print-queue';
 import { isSafe, isSafeWithDampener, loadFromFile as loadReportsFromFile } from './utils/report';
-import { loadFromFile, search } from './utils/word-search';
+import { loadFromFile as loadWordSearchFromFile, search } from './utils/word-search';
 import { search as searchX } from './utils/x-mas';
 
 const day1 = () => {
-  console.log('-- DAY 1 --');
+  console.log('--- Day 1: Historian Hysteria ---');
   
   const [left, right] = loadLocationIdsFromFile('./lib/location-ids.txt');
 
@@ -16,7 +17,7 @@ const day1 = () => {
 },
 
  day2 = () => {
-  console.log('-- DAY 2 --');
+  console.log('--- Day 2: Red-Nosed Reports ---');
 
   const reports = loadReportsFromFile('./lib/reports.txt');
 
@@ -27,7 +28,7 @@ const day1 = () => {
 },
 
  day3 = () => {
-  console.log('-- DAY 3 --');
+  console.log('--- Day 3: Mull It Over ---');
 
   // 191183308
   console.log(`Multiplication results (commands disabled): ${calculateMuls(loadMulsFromFile('./lib/muls.txt', false))}`);
@@ -36,13 +37,25 @@ const day1 = () => {
 },
 
  day4 = () => {
-  console.log('-- DAY 4 --');
+  console.log('--- Day 4: Ceres Search ---');
 
-  const grid = loadFromFile('./lib/word-search.txt');
+  const grid = loadWordSearchFromFile('./lib/word-search.txt');
   // 2554
   console.log(`XMAS appears in word search (occurence count): ${search(grid, 'XMAS')}`);
   // 1916
   console.log(`X-MAS appears in word search (occurence count): ${searchX(grid, 'MAS')}`);
+},
+
+day5 = () => {
+  console.log('--- Day 5: Print Queue ---');
+
+  const data = loadFromFile('./lib/print-queue.txt');
+  const production = hasCorrectOrdering(data);
+  // 6612
+  const subTotal = calculateProductionTotals(production);
+  console.log(`Middle page numbers total to: ${subTotal}`);
+  // 4944
+  console.log(`[Corrected] middle page numbers total to: ${calculateProductionTotals(correctOrdering(data)) - subTotal}`)
 }
 
 (() => {
@@ -50,4 +63,5 @@ const day1 = () => {
   day2();
   day3();
   day4();
+  day5();
 })();
