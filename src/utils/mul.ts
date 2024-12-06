@@ -50,10 +50,10 @@ class CommandParser {
     }
 }
 
-export const loadFromFile = (file: string, enableCommands = true): Mul[] => {
+export const loadFromFile = (filename: string, enableCommands = true): Mul[] => {
     const parser = new CommandParser();
 
-    return readFileByLine<Mul[]>(file, (line: string) =>
+    return readFileByLine<Mul[]>(filename, (line: string) =>
         (enableCommands ? parser.findMulCandidates.bind(parser) : findMulCandidates)(line).map(c =>
             ({ digits: parseDigits(c) }) as Mul)
         ).filter(({ digits }) =>

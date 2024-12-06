@@ -1,19 +1,9 @@
-import fs from 'fs';
+import { readFileByLine } from "./fs";
 
 type Letter = string;
 type Grid = Letter[][];
 
-export const loadFromFile = (file: string): Grid => {
-    const data: Grid = [];
-
-    fs.readFileSync(file, 'utf-8').split(/\r?\n/u).forEach(((line: string) => {
-      if (line.length> 0) {
-        data.push(Array.from(line));
-      }
-    }));
-
-    return data;
-}
+export const loadFromFile = (filename: string): Grid => readFileByLine<Grid>(filename, line => [Array.from(line)])
 
 interface Coords { i: number, j: number }
 

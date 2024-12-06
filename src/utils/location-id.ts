@@ -1,22 +1,16 @@
-import fs from 'fs';
+import { readFileByLine } from "./fs";
 
 export type LocationId = number;
 
 const parseLocationId = (string: string) => parseInt(string, 10);
 
-export const loadFromFile= (file: string): LocationId[][] => {
-  const left: LocationId[] = [],
-   right: LocationId[] = [];
-
-  fs.readFileSync(file, 'utf-8').split(/\r?\n/u).forEach(((line: string) => {
-    if (line.length> 0) {
+export const loadFromFile= (filename: string): LocationId[][] => {
+  const data: Array<Array<LocationId>> = readFileByLine(filename, line => {
       const [l, r] = line.split('   ');
-      left.push(parseLocationId(l));
-      right.push(parseLocationId(r));
-    }
-  }));
+      return [[parseLocationId(l), parseLocationId(r)]];
+  });
 
-  return [[...left], [...right]];
+  return data.reduce((acc, cur) => [acc[0].concat(cur[0]), acc[1].concat(cur[1])], [[], []] as Array<Array<LocationId>>);
 }
 
 export const calcDifference = (left: LocationId[], right: LocationId[]): number => left.reduce((acc, cur, idx) => acc + Math.abs(cur - right[idx]), 0)
