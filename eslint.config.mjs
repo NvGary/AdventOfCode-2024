@@ -25,6 +25,7 @@ export default tseslint.config(
     // custom rules
     rules: {
       "array-callback-return": "error",
+      "arrow-body-style": ["error", "as-needed"],
       "curly": "error",
       "eqeqeq": "error",
       "max-statements": "error",

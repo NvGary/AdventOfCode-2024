@@ -1,4 +1,4 @@
-import fs from 'fs';
+import { readFileByLine } from "./fs";
 
 export type Level = number;
 export interface Report {
@@ -7,17 +7,7 @@ export interface Report {
 
 const parseLevel = (string: string) => parseInt(string, 10);
 
-export const loadFromFile = (file: string): Report[] => {
-    const data: Report[] = [];
-
-    fs.readFileSync(file, 'utf-8').split(/\r?\n/u).forEach(((line: string) => {
-      if (line.length> 0) {
-        data.push({ levels: line.split(' ').map(parseLevel) });
-      }
-    }));
-
-    return data;
-}
+export const loadFromFile = (filename: string): Report[] => readFileByLine<Report[]>(filename, line => [{ levels: line.split(' ').map(parseLevel) }])
 
 export const isSafe = (report: Report): boolean => {
     const res = report.levels.reduce((acc, cur, idx) => {
