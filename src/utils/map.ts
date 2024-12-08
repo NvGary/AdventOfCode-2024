@@ -60,7 +60,7 @@ export const advanceTime = (map: Grid, noTrace: boolean = false): { map: Grid; i
         // console.log({ fn: 'queryRotate', i, j, direction });
 
         if (i < 0 || j < 0 || i >= map.length || j >= map[0].length) {
-            return { rotated: false, direction };
+            return { direction, rotated: false };
         }
         else if (['#', 'O'].includes(map[i][j])) {
             return { direction: (direction + 1) % 4 as Direction, rotated: true };
