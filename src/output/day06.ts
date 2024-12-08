@@ -9,5 +9,5 @@ export const day06 = () => {
     // 5531
     console.log(`Unique positions visited: ${countVisited(res)}`);
     // 2165
-    console.log(`Minimize time paradoxes with ${createDejavu(res)} unique obstacles`)
-}
+    console.log(`Minimize time paradoxes with ${createDejavu(res)} unique obstacles`);
+};
