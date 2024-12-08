@@ -46,6 +46,7 @@ export default tseslint.config(
             '@typescript-eslint/no-unused-vars': ['error'],
             'array-callback-return': 'error',
             'arrow-body-style': ['error', 'as-needed'],
+            'camelcase': ['error', { allow: ['_impl$'] }],
             'capitalized-comments': ['error', 'always', {
                 ignoreConsecutiveComments: true,
                 ignorePattern: 'console',
