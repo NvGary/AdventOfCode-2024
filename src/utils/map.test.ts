@@ -13,7 +13,7 @@ const grid = [
     ['.', '.', '.', '.', '.', '.', '#', '.', '.', '.'],
 ];
 
-describe('report utils', () => {
+describe('map utils', () => {
     describe('function loadFromFile', () => {
         it('loads data correctly', () => {
             const data = loadFromFile('./lib/test/map.txt');

@@ -1,4 +1,4 @@
-import { getCorrect, loadFromFile } from './calibration';
+import { OPERATORS, getCorrect, loadFromFile } from './calibration';
 
 const data = [
     { ordinals: [10, 19], value: 190 },
@@ -40,8 +40,8 @@ describe('calibration util', () => {
             expect(res.reduce<number>((acc, { value }) => acc + value, 0)).toBe(3749);
         });
 
-        it('accepts optional operators', () => {
-            const res = getCorrect(data, { concat: (a, b) => parseInt([a, b].join(''), 10) });
+        it('accepts operator overloads', () => {
+            const res = getCorrect(data, { ...OPERATORS, concat: (a, b) => parseInt([a, b].join(''), 10) });
 
             expect(res).toHaveLength(6);
 
