@@ -1,10 +1,10 @@
 import { calculateMuls, loadFromFile } from './mul';
 
 const muls = [
-    { digits: [2,4] },
-    { digits: [5,5] },
-    { digits: [11,8] },
-    { digits: [8,5] }
+    { digits: [2, 4] },
+    { digits: [5, 5] },
+    { digits: [11, 8] },
+    { digits: [8, 5] }
 ];
 
 describe('mul utils', () => {
@@ -28,14 +28,14 @@ describe('mul utils', () => {
 
     describe('function calculateMuls', () => {
         describe('commands disabled', () => {
-            it('calculate correctly', ()=> {
+            it('calculate correctly', () => {
                 const res = calculateMuls(muls);
                 expect(res).toBe(161);
             });
-            });
+        });
 
         describe('commands enabled', () => {
-            it('calculate correctly', ()=> {
+            it('calculate correctly', () => {
                 const res = calculateMuls([muls[0], muls[3]]);
                 expect(res).toBe(48);
             });
