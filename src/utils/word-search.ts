@@ -60,5 +60,5 @@ export const search = (grid: Grid, word: string): number => {
         }
     }
 
-    return counter
+    return counter;
 }
