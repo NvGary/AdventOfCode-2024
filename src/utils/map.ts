@@ -90,7 +90,7 @@ export const createDejavu = (map: Grid): number => {
                 map[i][j] = 'X';
 
                 if (isLooping) {
-                    count++;
+                    ++count;
                     // console.log(`--- LOOPING ${count} ---`);
                 }
             }
