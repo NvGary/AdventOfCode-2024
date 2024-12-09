@@ -1,5 +1,7 @@
 /* eslint-disable @stylistic/array-element-newline */
-import { type DiskMap, FREE_BLOCK, checksum } from '../utils/diskmap';
+import type { DiskMap } from './diskmap.types';
+import { FREE_BLOCK } from './freeBlocks';
+import { checksum } from '../utils/diskmap';
 import { defragment } from '../utils/diskmap-ex';
 
 const diskMap = [

@@ -1,4 +1,7 @@
-import { DiskMap, FREE_BLOCK } from './diskmap';
+import { FREE_BLOCK, FreeBlocks } from './freeBlocks';
+import type { DiskMap } from './diskmap.types';
+
+// Const toString = (disk: DiskMap): string => disk.map<string>(block => `${block.fileId ?? '.'}`).join('');
 
 // eslint-disable-next-line max-statements
 const lastAllocatedBlock = (disk: DiskMap, start: number): { index: number; length: number } => {
@@ -25,27 +28,30 @@ const lastAllocatedBlock = (disk: DiskMap, start: number): { index: number; leng
     return { index: 0, length: 0 };
 };
 
-const freeBlock = (disk: DiskMap, length: number): number => {
-    let freePos = disk.indexOf(FREE_BLOCK);
+// Const freeBlock = (disk: DiskMap, length: number): number => {
+//     let freePos = disk.indexOf(FREE_BLOCK);
 
-    while (freePos !== -1 && freePos + length < disk.length) {
-        const allocatedPos = disk.findIndex((block, idx) => block !== FREE_BLOCK && idx > freePos);
-        if (allocatedPos - freePos >= length) {
-            return freePos;
-        }
+//     while (freePos !== -1 && freePos + length < disk.length) {
+//         const allocatedPos = disk.findIndex((block, idx) => block !== FREE_BLOCK && idx > freePos);
+//         if (allocatedPos - freePos >= length) {
+//             return freePos;
+//         }
 
-        freePos = disk.indexOf(FREE_BLOCK, freePos + 1);
-    }
+//         freePos = disk.indexOf(FREE_BLOCK, freePos + 1);
+//     }
 
-    return -1;
-};
+//     return -1;
+// };
 
 // eslint-disable-next-line max-statements
 export const defragment = (disk: DiskMap): DiskMap => {
+    const freeBlocks = new FreeBlocks();
+    freeBlocks.build(disk);
+
     const final: DiskMap = disk.map(block => block);
     let { index: readPos, length: blockLength } = lastAllocatedBlock(disk, disk.length - 1);
+    let writePos = freeBlocks.release(blockLength);
     let lastMovedFileId: number = disk[readPos].fileId! + 1;
-    let writePos = freeBlock(disk, blockLength);
     // console.log({ fn: 'defragment:01', blockLength, lastMovedFileId, readPos, writePos });
 
     while (lastMovedFileId > 0) {
@@ -54,6 +60,7 @@ export const defragment = (disk: DiskMap): DiskMap => {
 
         if (writePos >= 0 && readPos && writePos < readPos) {
             // Relocate block
+            // console.log({ fn: 'defragment', msg: 'relocating block' });
             final.fill(final[readPos], writePos, writePos + blockLength);
             final.fill(FREE_BLOCK, readPos, readPos + blockLength);
         }
@@ -66,9 +73,10 @@ export const defragment = (disk: DiskMap): DiskMap => {
         }
 
         if (readPos > 0) {
-            writePos = freeBlock(final, blockLength);
+            writePos = freeBlocks.release(blockLength);
         }
     }
 
+    // console.log(toString(final));
     return final;
 };
