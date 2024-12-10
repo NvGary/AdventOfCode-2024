@@ -1,4 +1,4 @@
-import { advanceTime, countVisited, createDejavu, loadFromFile } from './map';
+import { advanceTime, countVisited, createDejavu, loadFromFile } from './maze';
 
 const grid = [
     ['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
