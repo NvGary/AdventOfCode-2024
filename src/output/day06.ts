@@ -1,4 +1,4 @@
-import { advanceTime, countVisited, createDejavu, loadFromFile } from '../utils/map';
+import { advanceTime, countVisited, createDejavu, loadFromFile } from '../utils/maze';
 
 export const day06 = () => {
     console.log('--- Day 6: Guard Gallivant ---');

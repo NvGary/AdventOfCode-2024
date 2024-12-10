@@ -1,103 +1,71 @@
 import { readFileByLine } from './fs';
 
-type Letter = string;
-type Grid = Letter[][];
+type Grid<T> = T[][];
+export type Coords = { i: number; j: number };
 
-export const loadFromFile = (filename: string): Grid => readFileByLine<Grid>(filename, line => [Array.from(line)]);
-
-interface Coords { i: number; j: number }
-
-const findStart = (map: Grid): Coords => {
-    const i = map.findIndex(row => row.includes('^'));
-    const j = map[i].findIndex(col => col === '^');
-
-    // console.log(`start position is: {${i},${j}}`);
-    return { i, j };
-};
-
-const enum Direction {
+export const enum Direction {
     NORTH,
     EAST,
     SOUTH,
     WEST
 }
 
-const walk: Array<(coords: Coords) => Coords> = [
+const translate: Array<(coords: Coords) => Coords> = [
     ({ i, j }) => ({ i: i - 1, j }),
     ({ i, j }) => ({ i, j: j + 1 }),
     ({ i, j }) => ({ i: i + 1, j }),
     ({ i, j }) => ({ i, j: j - 1 })
 ];
 
-// eslint-disable-next-line max-statements
-export const advanceTime = (map: Grid, noTrace: boolean = false): { map: Grid; isLooping: boolean } => {
-    let facing = Direction.NORTH;
-    // eslint-disable-next-line no-useless-assignment
-    let rotated = false;
-    let position: Coords = findStart(map);
-    const path: Array<{ coords: Coords; direction: Direction }> = [];
-    const markMap = (coords: Coords, direction: Direction): boolean => {
-        const { i, j } = coords;
-        const dejavu = path.some(({ coords: { i: vi, j: vj }, direction: vDirection }) => vDirection === direction && vi === i && vj === j);
-        if (noTrace === false && map[i][j] !== '^') {
-            map[i][j] = 'X';
-        }
-        if (!dejavu) {
-            path.push({ coords, direction });
-        }
+const toString = (string: string): string => string.toString();
 
-        return dejavu;
-    };
-    let dejavu = markMap(position, facing);
+export class Map<T = string> {
+    private grid: Grid<T> = [];
+    private bounds: Coords = { i: 0, j: 0 };
 
-    const isComplete = (coords: Coords, direction: Direction): boolean => {
-        const { i, j } = walk[direction](coords);
-        // console.log({ fn: 'isComplete', i, j });
-        return i < 0 || j < 0 || i >= map.length || j >= map[0].length;
-    };
-    const queryRotate = (coords: Coords, direction: Direction): { direction: Direction; rotated: boolean } => {
-        const { i, j } = walk[direction](coords);
-        // console.log({ fn: 'queryRotate', i, j, direction });
-
-        if (i < 0 || j < 0 || i >= map.length || j >= map[0].length) {
-            return { direction, rotated: false };
-        }
-        else if (['#', 'O'].includes(map[i][j])) {
-            return { direction: (direction + 1) % 4 as Direction, rotated: true };
-        }
-        return { direction, rotated: false };
-    };
-
-    while (!dejavu && !isComplete(position, facing)) {
-        ({ rotated, direction: facing } = queryRotate(position, facing));
-        if (!rotated) {
-            position = walk[facing](position);
-        }
-        dejavu = markMap(position, facing);
+    public loadFromFile(filename: string, conv: (arg0: string) => T | unknown = toString): void {
+        this.grid = readFileByLine<Grid<T>>(filename, line => [Array.from(line).map(conv) as T[]]);
+        this.setBounds();
     }
 
-    return { isLooping: dejavu, map };
-};
-
-export const createDejavu = (map: Grid): number => {
-    let count = 0;
-
-    for (let i = 0; i < map.length; ++i) {
-        for (let j = 0; j < map[i].length; ++j) {
-            if (map[i][j] === 'X') {
-                map[i][j] = 'O';
-                const { isLooping } = advanceTime(map, true);
-                map[i][j] = 'X';
-
-                if (isLooping) {
-                    ++count;
-                    // console.log(`--- LOOPING ${count} ---`);
-                }
-            }
-        }
+    private setBounds(): void {
+        this.bounds = { i: this.grid.length - 1, j: this.grid[0].length - 1 };
     }
 
-    return count;
-};
+    private validateBounds({i, j}: Coords): boolean {
+        return i >= 0 && i <= this.bounds.i && j >= 0 && j <= this.bounds.j;
+    }
 
-export const countVisited = (map: Grid): number => map.reduce((acc, row) => acc + row.filter(col => ['X', '^'].includes(col)).length, 0);
+    public getBounds(): Coords {
+        return this.bounds;
+    }
+
+    public at(coords: Coords): T | null {
+        if (this.validateBounds(coords) === false) {
+            return null;
+        }
+
+        // console.log({ coords });
+        return this.grid[coords.i][coords.j];
+    }
+
+    public move(from: Coords, direction: Direction): Coords | null {
+        const at = translate[direction](from);
+
+        if (this.validateBounds(at) === false) {
+            return null;
+        }
+
+        return at;
+    }
+
+    public look(from: Coords, direction: Direction): T | null {
+        const at = translate[direction](from);
+
+        if (this.validateBounds(at) === false) {
+            return null;
+        }
+
+        return this.at(at);
+    }
+}
