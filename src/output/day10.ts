@@ -1,11 +1,9 @@
-import { findTrails, getTrailHeads } from '../utils/hiking-trail';
-import { Map } from '../utils/map';
+import { findTrails, getTrailHeads, loadFromFile } from '../utils/hiking-trail';
 
 export const day10 = () => {
     console.log('--- Day 10: Hoof It ---');
 
-    const map = new Map<number>();
-    map.loadFromFile('./lib/topology.txt', (string: string) => Number(string));
+    const map = loadFromFile('./lib/topology.txt');
     const trailHeads = getTrailHeads(map);
 
     // 746

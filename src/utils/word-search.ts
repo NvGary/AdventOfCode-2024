@@ -1,15 +1,15 @@
-import { readFileByLine } from './fs';
+import { type Coords, StringArray2D } from './array2d';
 
-type Letter = string;
-type Grid = Letter[][];
+export const loadFromFile = (filename: string): StringArray2D => {
+    const grid = new StringArray2D();
+    grid.loadFromFile(filename);
 
-export const loadFromFile = (filename: string): Grid => readFileByLine<Grid>(filename, line => [Array.from(line)]);
-
-interface Coords { i: number; j: number }
+    return grid;
+};
 
 // eslint-disable-next-line max-statements
-const match = (grid: Grid, { i, j }: Coords, word: string): number => {
-    const matches: Letter[][] = [];
+const match = ({ grid }: ReturnType<typeof loadFromFile>, { i, j }: Coords, word: string): number => {
+    const matches: typeof grid = [];
 
     // N
     if (j + 1 >= word.length) {
@@ -49,12 +49,14 @@ const match = (grid: Grid, { i, j }: Coords, word: string): number => {
     return matches.filter(c => c.join('') === word).length;
 };
 
-export const search = (grid: Grid, word: string): number => {
+export const search = (grid: ReturnType<typeof loadFromFile>, word: string): number => {
     const l = word.charAt(0);
     let counter = 0;
-    for (let i = 0; i < grid.length; ++i) {
-        for (let j = 0; j < grid[i].length; ++j) {
-            if (grid[i][j] === l) {
+    const { i: iBounds, j: jBounds } = grid.getSize();
+
+    for (let i = 0; i < iBounds; ++i) {
+        for (let j = 0; j < jBounds; ++j) {
+            if (grid.at({ i, j }) === l) {
                 counter += match(grid, { i, j }, word);
             }
         }
