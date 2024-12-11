@@ -26,6 +26,7 @@ export default tseslint.config(
         extends: [jestPlugin.configs['flat/recommended']],
         files: ['**/*.test.ts'],
         rules: {
+            'init-declarations': 'off',
             'max-lines-per-function': 'off',
         }
     },

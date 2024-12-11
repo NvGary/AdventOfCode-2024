@@ -1,46 +1,24 @@
-import { readFileByLine } from './fs';
+import { type Coords, Direction, StringArray2D } from './array2d';
 
-type Letter = string;
-type Grid = Letter[][];
+export const loadFromFile = (filename: string): StringArray2D => {
+    const grid = new StringArray2D();
+    grid.loadFromFile(filename);
 
-export const loadFromFile = (filename: string): Grid => readFileByLine<Grid>(filename, line => [Array.from(line)]);
-
-interface Coords { i: number; j: number }
-
-const findStart = (map: Grid): Coords => {
-    const i = map.findIndex(row => row.includes('^'));
-    const j = map[i].findIndex(col => col === '^');
-
-    // console.log(`start position is: {${i},${j}}`);
-    return { i, j };
+    return grid;
 };
 
-const enum Direction {
-    NORTH,
-    EAST,
-    SOUTH,
-    WEST
-}
-
-const walk: Array<(coords: Coords) => Coords> = [
-    ({ i, j }) => ({ i: i - 1, j }),
-    ({ i, j }) => ({ i, j: j + 1 }),
-    ({ i, j }) => ({ i: i + 1, j }),
-    ({ i, j }) => ({ i, j: j - 1 })
-];
-
 // eslint-disable-next-line max-statements
-export const advanceTime = (map: Grid, noTrace: boolean = false): { map: Grid; isLooping: boolean } => {
+export const advanceTime = (map: ReturnType<typeof loadFromFile>, noTrace: boolean = false): { map: ReturnType<typeof loadFromFile>; isLooping: boolean } => {
     let facing = Direction.NORTH;
     // eslint-disable-next-line no-useless-assignment
     let rotated = false;
-    let position: Coords = findStart(map);
+    let position: Coords = map.find('^');
     const path: Array<{ coords: Coords; direction: Direction }> = [];
     const markMap = (coords: Coords, direction: Direction): boolean => {
         const { i, j } = coords;
         const dejavu = path.some(({ coords: { i: vi, j: vj }, direction: vDirection }) => vDirection === direction && vi === i && vj === j);
-        if (noTrace === false && map[i][j] !== '^') {
-            map[i][j] = 'X';
+        if (noTrace === false && map.at({ i, j }) !== '^') {
+            map.mark({ i, j }, 'X');
         }
         if (!dejavu) {
             path.push({ coords, direction });
@@ -50,28 +28,26 @@ export const advanceTime = (map: Grid, noTrace: boolean = false): { map: Grid; i
     };
     let dejavu = markMap(position, facing);
 
-    const isComplete = (coords: Coords, direction: Direction): boolean => {
-        const { i, j } = walk[direction](coords);
-        // console.log({ fn: 'isComplete', i, j });
-        return i < 0 || j < 0 || i >= map.length || j >= map[0].length;
-    };
-    const queryRotate = (coords: Coords, direction: Direction): { direction: Direction; rotated: boolean } => {
-        const { i, j } = walk[direction](coords);
-        // console.log({ fn: 'queryRotate', i, j, direction });
+    const isComplete = (coords: Coords, direction: Direction): boolean => map.look(coords, direction) === null;
 
-        if (i < 0 || j < 0 || i >= map.length || j >= map[0].length) {
+    const queryRotate = (coords: Coords, direction: Direction): { direction: Direction; rotated: boolean } => {
+        const pos = map.step(coords, direction);
+
+        if (pos === null) {
             return { direction, rotated: false };
         }
-        else if (['#', 'O'].includes(map[i][j])) {
+
+        if (['#', 'O'].includes(map.at(pos)!)) {
             return { direction: (direction + 1) % 4 as Direction, rotated: true };
         }
+
         return { direction, rotated: false };
     };
 
     while (!dejavu && !isComplete(position, facing)) {
         ({ rotated, direction: facing } = queryRotate(position, facing));
         if (!rotated) {
-            position = walk[facing](position);
+            position = map.step(position, facing)!;
         }
         dejavu = markMap(position, facing);
     }
@@ -79,15 +55,17 @@ export const advanceTime = (map: Grid, noTrace: boolean = false): { map: Grid; i
     return { isLooping: dejavu, map };
 };
 
-export const createDejavu = (map: Grid): number => {
+// eslint-disable-next-line max-statements
+export const createDejavu = (map: ReturnType<typeof loadFromFile>): number => {
     let count = 0;
+    const { i: iBounds, j: jBounds } = map.getSize();
 
-    for (let i = 0; i < map.length; ++i) {
-        for (let j = 0; j < map[i].length; ++j) {
-            if (map[i][j] === 'X') {
-                map[i][j] = 'O';
+    for (let i = 0; i < iBounds; ++i) {
+        for (let j = 0; j < jBounds; ++j) {
+            if (map.at({ i, j }) === 'X') {
+                map.mark({ i, j }, 'O');
                 const { isLooping } = advanceTime(map, true);
-                map[i][j] = 'X';
+                map.mark({ i, j }, 'X');
 
                 if (isLooping) {
                     ++count;
@@ -100,4 +78,4 @@ export const createDejavu = (map: Grid): number => {
     return count;
 };
 
-export const countVisited = (map: Grid): number => map.reduce((acc, row) => acc + row.filter(col => ['X', '^'].includes(col)).length, 0);
+export const countVisited = ({ grid }: ReturnType<typeof loadFromFile>): number => grid.reduce((acc, row) => acc + row.filter(col => ['X', '^'].includes(col)).length, 0);

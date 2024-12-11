@@ -1,9 +1,8 @@
-type Letter = string;
-type Grid = Letter[][];
-interface Coords { i: number; j: number }
+import { Coords } from './array2d';
+import { type loadFromFile } from './word-search';
 
-const match = (grid: Grid, { i, j }: Coords, word: string): number => {
-    const matches: Letter[][] = [];
+const match = ({ grid }: ReturnType<typeof loadFromFile>, { i, j }: Coords, word: string): number => {
+    const matches: typeof grid = [];
 
     // NE - SW axis
     matches.push([grid[i + 1][j + 1], grid[i][j], grid[i - 1][j - 1]]);
@@ -16,12 +15,14 @@ const match = (grid: Grid, { i, j }: Coords, word: string): number => {
     return matches.filter(c => c.join('') === word).length === 2 ? 1 : 0;
 };
 
-export const search = (grid: Grid, word: string): number => {
+export const search = (grid: ReturnType<typeof loadFromFile>, word: string): number => {
     const l = word.charAt(1);
     let counter = 0;
-    for (let i = 1; i < grid.length - 1; ++i) {
-        for (let j = 1; j < grid[i].length - 1; ++j) {
-            if (grid[i][j] === l) {
+    const { i: iBounds, j: jBounds } = grid.getSize();
+
+    for (let i = 1; i < iBounds - 1; ++i) {
+        for (let j = 1; j < jBounds - 1; ++j) {
+            if (grid.at({ i, j }) === l) {
                 counter += match(grid, { i, j }, word);
             }
         }

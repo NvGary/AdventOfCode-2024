@@ -1,23 +1,25 @@
-import { readFileByLine } from './fs';
+import { type Coords, StringArray2D } from './array2d';
 
-type Letter = string;
-type Grid = Letter[][];
+export const loadFromFile = (filename: string): StringArray2D => {
+    const grid = new StringArray2D();
+    grid.loadFromFile(filename);
 
-export const loadFromFile = (filename: string): Grid => readFileByLine<Grid>(filename, line => [Array.from(line)]);
-
-type Coords = { i: number; j: number };
+    return grid;
+};
 
 type Antenna = { frequency: string; locations: Coords[] };
 
-export const identify = (grid: Grid): Antenna[] => {
+export const identify = (grid: ReturnType<typeof loadFromFile>): Antenna[] => {
     const locs: Record<string, Coords[]> = {};
+    const size = grid.getSize();
 
-    for (let i = 0; i < grid.length; ++i) {
-        for (let j = 0; j < grid[i].length; ++j) {
-            const frequency = grid[i][j];
+    for (let i = 0; i < size.i; ++i) {
+        for (let j = 0; j < size.j; ++j) {
+            const pos = { i, j };
+            const frequency = grid.at(pos)!;
             if (frequency !== '.') {
                 locs[frequency] ||= [];
-                locs[frequency].push({ i, j });
+                locs[frequency].push(pos);
             }
         }
     }
@@ -41,9 +43,8 @@ const applyTranspose = (value: Coords, transpose: Coords, boundaries: Coords): C
     return applied;
 };
 
-export const findAntinodes = (grid: Grid, antennas: Antenna[], enableProjections: boolean = false) => {
-    const iMax = grid.length - 1;
-    const jMax = grid[0].length - 1;
+export const findAntinodes = (grid: ReturnType<typeof loadFromFile>, antennas: Antenna[], enableProjections: boolean = false) => {
+    const { i: iMax, j: jMax } = grid.getSize();
 
     return antennas.map<Coords[]>(({ locations }) => {
         const antinodes: Coords[] = [];
@@ -56,12 +57,12 @@ export const findAntinodes = (grid: Grid, antennas: Antenna[], enableProjections
 
                 antinodes.push(...((left: Coords, right: Coords, transpose: Coords): Coords[] => (enableProjections
                     ? [
-                        ...applyTranspose(left, transpose, { i: iMax, j: jMax }),
-                        ...applyTranspose(right, { i: transpose.i * -1, j: transpose.j * -1 }, { i: iMax, j: jMax })]
+                        ...applyTranspose(left, transpose, { i: iMax - 1, j: jMax - 1 }),
+                        ...applyTranspose(right, { i: transpose.i * -1, j: transpose.j * -1 }, { i: iMax - 1, j: jMax - 1 })]
                     : [
                         { i: right.i + transpose.i, j: right.j + transpose.j },
                         { i: left.i - transpose.i, j: left.j - transpose.j }
-                    ]).filter(({ i, j }) => i >= 0 && i <= iMax && j >= 0 && j <= jMax))(kLoc, lLoc, offset));
+                    ]).filter(({ i, j }) => i >= 0 && i < iMax && j >= 0 && j < jMax))(kLoc, lLoc, offset));
             }
         }
 
