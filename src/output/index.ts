@@ -8,3 +8,4 @@ export { day07 } from './day07';
 export { day08 } from './day08';
 export { day09 } from './day09';
 export { day10 } from './day10';
+export { day11 } from './day11';

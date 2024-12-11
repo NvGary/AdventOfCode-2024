@@ -44,7 +44,18 @@ export default tseslint.config(
             '@stylistic/arrow-parens': ['error', 'as-needed'],
             '@stylistic/comma-dangle': 'off',
             '@stylistic/indent': ['error', 4],
-            '@typescript-eslint/no-unused-vars': ['error'],
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                {
+                    args: 'all',
+                    argsIgnorePattern: '^_',
+                    caughtErrors: 'all',
+                    caughtErrorsIgnorePattern: '^_',
+                    destructuredArrayIgnorePattern: '^_',
+                    ignoreRestSiblings: true,
+                    varsIgnorePattern: '^_',
+                }
+            ],
             'array-callback-return': 'error',
             'arrow-body-style': ['error', 'as-needed'],
             'camelcase': ['error', { allow: ['_impl$'] }],
