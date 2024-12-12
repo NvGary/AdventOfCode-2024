@@ -1,4 +1,5 @@
 import { type Coords, Direction, NumberArray2D } from './array2d';
+import { onlyUniqueCoords } from './array2d/array2d';
 
 export const loadFromFile = (filename: string): NumberArray2D => {
     const grid = new NumberArray2D();
@@ -23,8 +24,6 @@ export const getTrailHeads = (map: ReturnType<typeof loadFromFile>): Coords[] =>
 };
 
 type Trail = { begin: Coords; end: Coords };
-
-const onlyUniqueCoords = (value: Coords, index: number, array: Coords[]): boolean => array.findIndex(({ i, j }) => i === value.i && j === value.j) === index;
 
 export const findTrails = (map: ReturnType<typeof loadFromFile>, trailHeads: Coords[], filterUnique: boolean = false): Trail[] => {
     const trails = trailHeads.map(trailHead => {

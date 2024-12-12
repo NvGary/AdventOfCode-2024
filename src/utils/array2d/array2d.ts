@@ -93,3 +93,5 @@ export class Array2D<T> {
         return this.at(at);
     }
 }
+
+export const onlyUniqueCoords = (value: Coords, index: number, array: Coords[]): boolean => array.findIndex(({ i, j }) => i === value.i && j === value.j) === index;
