@@ -28,7 +28,7 @@ export const advanceTime = (map: ReturnType<typeof loadFromFile>, noTrace: boole
     };
     let dejavu = markMap(position, facing);
 
-    const isComplete = (coords: Coords, direction: Direction): boolean => map.look(coords, direction) === null;
+    const isComplete = (coords: Coords, direction: Direction): boolean => map.peek(coords, direction) === null;
 
     const queryRotate = (coords: Coords, direction: Direction): { direction: Direction; rotated: boolean } => {
         const pos = map.step(coords, direction);

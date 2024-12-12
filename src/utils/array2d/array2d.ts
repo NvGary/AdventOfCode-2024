@@ -83,7 +83,7 @@ export class Array2D<T> {
         return at;
     }
 
-    public look(from: Coords, direction: Direction): T | null {
+    public peek(from: Coords, direction: Direction): T | null {
         const at = step[direction](from);
 
         if (this.validateBounds(at) === false) {
