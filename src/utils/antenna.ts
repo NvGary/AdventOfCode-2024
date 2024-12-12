@@ -1,4 +1,5 @@
 import { type Coords, StringArray2D } from './array2d';
+import { onlyUniqueCoords } from './array2d/array2d';
 
 export const loadFromFile = (filename: string): StringArray2D => {
     const grid = new StringArray2D();
@@ -26,8 +27,6 @@ export const identify = (grid: ReturnType<typeof loadFromFile>): Antenna[] => {
 
     return Object.entries(locs).map(([frequency, locations]) => ({ frequency, locations }));
 };
-
-const onlyUniqueCoords = (value: Coords, index: number, array: Coords[]): boolean => array.findIndex(({ i, j }) => i === value.i && j === value.j) === index;
 
 const applyTranspose = (value: Coords, transpose: Coords, boundaries: Coords): Coords[] => {
     const applied = [];
