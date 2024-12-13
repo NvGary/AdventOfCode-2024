@@ -7,7 +7,7 @@ export interface Report {
 
 const parseLevel = (string: string) => parseInt(string, 10);
 
-export const loadFromFile = (filename: string): Report[] => readFileByLine<Report[]>(filename, line => [{ levels: line.split(' ').map(parseLevel) }]);
+export const loadFromFile = (filename: string): Report[] => readFileByLine<Report>(filename, line => ({ levels: line.split(' ').map(parseLevel) }));
 
 export const isSafe = (report: Report): boolean => {
     const res = report.levels.reduce((acc, cur, idx) => {
