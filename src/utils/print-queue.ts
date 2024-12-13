@@ -6,18 +6,17 @@ const parseOrdering = (string: string): number => parseInt(string, 10);
 const parseProduction = (string: string): number => parseInt(string, 10);
 
 export const loadFromFile = (filename: string): PrintQueue => {
-    const ordering = readFileByLine(filename, line => {
-        if (line.includes('|')) {
-            return [line.split('|').map(parseOrdering)];
-        }
-        return [];
-    });
+    const ordering: number[][] = [];
+    const production: number[][] = [];
 
-    const production = readFileByLine(filename, line => {
-        if (line.includes(',')) {
-            return [line.split(',').map(parseProduction)];
+    readFileByLine(filename, line => {
+        if (line.includes('|')) {
+            ordering.push(line.split('|').map(parseOrdering));
         }
-        return [];
+        else if (line.includes(',')) {
+            production.push(line.split(',').map(parseProduction));
+        }
+        return null;
     });
 
     return { ordering, production };

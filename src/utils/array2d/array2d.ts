@@ -33,7 +33,7 @@ export class Array2D<T> {
     }
 
     public loadFromFile(filename: string): void {
-        this.impl = readFileByLine<Grid<T>>(filename, line => [Array.from(line).map(this.conv)]);
+        this.impl = readFileByLine<T[]>(filename, line => Array.from(line).map(this.conv));
         this.setSize();
     }
 

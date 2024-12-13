@@ -25,7 +25,7 @@ const decompress = (string: string): DiskMap => {
     return disk;
 };
 
-export const loadFromFile = (filename: string): DiskMap => readFileByLine(filename, line => decompress(line));
+export const loadFromFile = (filename: string): DiskMap => readFileByLine(filename, line => decompress(line))[0];
 
 const lastAllocatedBlock = (disk: DiskMap, start: number): number => {
     let index = start;

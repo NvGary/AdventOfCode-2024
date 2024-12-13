@@ -12,7 +12,7 @@ export const loadFromFile = (filename: string): Calibration[] => readFileByLine(
     const [value, rem] = line.split(':');
     const ordinals = rem.trim().split(' ');
 
-    return [{ ordinals: parseOrdinals(ordinals), value: parseValue(value) }];
+    return { ordinals: parseOrdinals(ordinals), value: parseValue(value) };
 });
 
 export type Operator = (a: number, b: number) => number;

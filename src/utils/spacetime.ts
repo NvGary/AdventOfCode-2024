@@ -3,7 +3,7 @@ import { readFileByLine } from './fs';
 type Pebble = number;
 type Pebbles = Pebble[];
 
-export const loadFromFile = (filename: string): Pebbles => readFileByLine(filename, line => line.split(' ').map(Number));
+export const loadFromFile = (filename: string): Pebbles => readFileByLine(filename, line => line.split(' ').map(Number))[0];
 
 type Operator = {
     check: (n: Pebble) => boolean;

@@ -10,16 +10,16 @@ type Callback<T> = (line: string) => T;
  * @param {Callback} processLine Callback to invoke for every line read
  * @returns {T} Array of {@link T}
  */
-export const readFileByLine = <T extends unknown[]>(filename: string, processLine: Callback<T>): T => {
-    const res = [] as unknown as T;
+export const readFileByLine = <T>(filename: string, processLine: Callback<T>): NonNullable<T>[] => {
+    const res: T[] = [];
 
     fs.readFileSync(filename, 'utf-8').split(/\r?\n/u).forEach((line: string) => {
         if (line.length > 0) {
-            res.push(...processLine(line));
+            res.push(processLine(line));
         }
     });
 
-    return res;
+    return res.filter(v => v) as NonNullable<T>[];
 };
 
 type BatchCallback<T> = (lines: string[]) => T;
@@ -33,15 +33,15 @@ type BatchCallback<T> = (lines: string[]) => T;
  * @param {number} batchSize Size of the batch. After reading this many lines, invoke {@link processBatch}
  * @returns {T} Array of {@link T}
  */
-export const readFileByLineBatch = <T>(filename: string, processBatch: BatchCallback<T>, batchSize: number): T[] => {
-    const res: T[] = [];
+export const readFileByLineBatch = <T>(filename: string, processBatch: BatchCallback<T>, batchSize: number): NonNullable<T>[] => {
     if (batchSize <= 0) {
         // Aborting due to invalid batch size
-        return res;
+        return [];
     }
 
     let linesRead = 0;
     const lines: string[] = [];
+    const res: T[] = [];
 
     fs.readFileSync(filename, 'utf-8').split(/\r?\n/u).forEach((line: string) => {
         if (line.length > 0) {
@@ -59,5 +59,5 @@ export const readFileByLineBatch = <T>(filename: string, processBatch: BatchCall
         res.push(processBatch(lines.splice(0, lines.length)));
     }
 
-    return res;
+    return res.filter(v => v) as NonNullable<T>[];
 };

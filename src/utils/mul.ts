@@ -54,9 +54,9 @@ export const loadFromFile = (filename: string, enableCommands = true): Mul[] => 
     const parser = new CommandParser();
 
     return readFileByLine<Mul[]>(filename, (line: string) =>
-        (enableCommands ? parser.findMulCandidates.bind(parser) : findMulCandidates)(line).map(c =>
-            ({ digits: parseDigits(c) }) as Mul)
-    ).filter(({ digits }) =>
+        (enableCommands ? parser.findMulCandidates.bind(parser) : findMulCandidates)(line).map<Mul>(c =>
+            ({ digits: parseDigits(c) }))
+    ).flat().filter(({ digits }) =>
         digits.length === 2);
 };
 
