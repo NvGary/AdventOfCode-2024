@@ -42,14 +42,14 @@ describe('hiking-trail util', () => {
         it('identifies unique trails', () => {
             const trailHeads = getTrailHeads(map);
             const res = findTrails(map, trailHeads, true);
-            // console.log(JSON.stringify(res));
+
             expect(res).toHaveLength(36);
         });
 
         it('identifies trails', () => {
             const trailHeads = getTrailHeads(map);
             const res = findTrails(map, trailHeads);
-            // console.log(JSON.stringify(res));
+
             expect(res).toHaveLength(81);
         });
     });

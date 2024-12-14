@@ -25,8 +25,6 @@ export class FreeBlocks {
 
             freePos = disk.indexOf(FREE_BLOCK, freePos + length);
         }
-
-        // console.log({ freeBlocks: this.blocks });
     }
 
     private add({ pos, span }: FreeBlockData): void {

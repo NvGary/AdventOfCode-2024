@@ -19,7 +19,6 @@ export const patrol = (grid: Array2D, robots: Robot[], seconds: number): Robot[]
 export const safetyFactor = (grid: Array2D, robots: Robot[]): number => {
     const { i: iSize, j: jSize } = grid.getSize();
     const { i: iExclude, j: jExclude }: Coords = { i: (iSize - 1) / 2, j: (jSize - 1) / 2 };
-    // console.log({ iExclude, jExclude });
 
     // eslint-disable-next-line max-statements
     const quadCount = robots.reduce<number[]>((acc, { position: { i, j } }) => {
@@ -47,8 +46,6 @@ export const safetyFactor = (grid: Array2D, robots: Robot[]): number => {
 
         return acc;
     }, Array(4).fill(0));
-
-    // console.log({ quadCount });
 
     return quadCount.reduce((acc, cur) => acc * cur);
 };

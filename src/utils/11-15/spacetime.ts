@@ -38,12 +38,7 @@ const applyOps = (pebble: Pebble): Pebbles => {
 
 type PebbleCount = Record<number, number>;
 
-const convertToInput = (state: PebbleCount): Pebbles => {
-    const res = Object.keys(state).map(n => Number(n));
-    // console.log({ fn: 'convertToInput', state, res });
-
-    return res;
-};
+const convertToInput = (state: PebbleCount): Pebbles => Object.keys(state).map(n => Number(n));
 
 export const advanceTime = (line: Pebbles, iterations: number = 1): PebbleCount => {
     const time: PebbleCount[] = [line.reduce<PebbleCount>((acc, cur) => {

@@ -27,16 +27,13 @@ const testOperators = ({ value: target, ordinals }: Calibration, operators: type
 
     const [a, b] = digits.splice(0, 2);
     let totals: Array<number> = Object.values(operators).map<number>(op => op(a, b)).filter(total => total <= target);
-    // console.log({ digits, target, a, b, totals });
 
     let c = digits.shift();
     while (c && totals.length) {
         totals = totals.reduce((acc, cur) => acc.concat(Object.values(operators).map<number>(op => op(cur, c as number))), [] as number[]).filter(total => total <= target);
-        // console.log({ c, totals });
         c = digits.shift();
     }
 
-    // console.log({ fn: 'testOperators', some: totals.some(res => res === target) });
     return totals.some(res => res === target);
 };
 

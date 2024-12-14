@@ -2,8 +2,6 @@ import type { Block, DiskMap } from './diskmap.types';
 import { FREE_BLOCK } from './freeBlocks';
 import { readFileByLine } from '../fs';
 
-// Const toString = (disk: DiskMap): string => disk.map<string>(block => `${block.fileId ?? '.'}`).join('');
-
 const decompress = (string: string): DiskMap => {
     const disk: DiskMap = [];
     let freeSpace = false;
@@ -21,7 +19,6 @@ const decompress = (string: string): DiskMap => {
         freeSpace = !freeSpace;
     });
 
-    // console.log(toString(disk));
     return disk;
 };
 
@@ -52,7 +49,6 @@ export const defragment = (disk: DiskMap): DiskMap => {
         readPos = lastAllocatedBlock(final, readPos - 1,);
     }
 
-    // console.log(toString(final));
     return final;
 };
 

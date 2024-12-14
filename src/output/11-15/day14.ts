@@ -12,6 +12,7 @@ export const day14 = () => {
     // 231852216
     console.log(`Safety factor is: ${safetyFactor(grid, prediction)}`);
 
+    // Started with 0, increasing by 1000 when solution was not found
     let i = 8000;
     let foundEasterEgg = false;
     let positions: Array2D<string> = new Array2D<string>(() => '.');
@@ -23,11 +24,13 @@ export const day14 = () => {
             return acc;
         }, new Array2D<string>(() => '.').fill({ i: 103, j: 101 }, '.'));
 
-        foundEasterEgg = positions.contains(Array(20).fill('X'));
+        // Started with Array(5)
+        // Array(8) finally yields xmas tree 'picture'
+        foundEasterEgg = positions.contains(Array(8).fill('X'));
         ++i;
     }
 
-    // 8160
+    // 8159
     if (foundEasterEgg) {
         console.log(positions!.grid.map(row => row.join('')).join('\n'));
         console.log(`Found easter egg after ${i - 1} seconds lapsed`);

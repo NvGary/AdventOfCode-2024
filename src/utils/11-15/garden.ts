@@ -28,12 +28,6 @@ const findUnallocated = (garden: Garden, plantName: Plant['name'], pos: Coords):
 // eslint-disable-next-line func-style
 function expand(this: Plot, garden: Garden): Plot {
     const unallocated: ReturnType<typeof findUnallocated> = findUnallocated(garden, this.plantName, this.coords[0]);
-    // console.log({ unallocated, plantName: this.plantName, pos: this.coords[0] });
-    // console.log({ peeks: [Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST].map(direction =>
-    //     ({ direction, plant: garden.peek(this.coords[0], direction) })) });
-    // console.log({ peeks: [Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST].map(direction =>
-    //     ({ direction, plant: garden.peek(this.coords[0], direction) }))
-    //     .filter(({ plant }) => plant && plant.name === this.plantName && Boolean(plant.plot) === false) });
 
     while (unallocated.length) {
         const { direction, pos: from } = unallocated.pop()!;
@@ -63,7 +57,6 @@ export const findPlots = (garden: Garden): Plot[] => {
                 plant.plot = plot;
 
                 expand.bind(plot)(garden);
-                // console.log({ plot });
                 plots.push(plot);
             }
         }
@@ -72,17 +65,13 @@ export const findPlots = (garden: Garden): Plot[] => {
     return plots;
 };
 
-export const calcPerimeter = ({ coords, plantName }: Plot, garden: Garden): number => {
-    const perimeter = coords.reduce((acc, cur) => {
-        const add = [Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST].map(
-            direction => garden.peek(cur, direction)).filter(
-            plant => plant?.name !== plantName).length;
+export const calcPerimeter = ({ coords, plantName }: Plot, garden: Garden): number => coords.reduce((acc, cur) => {
+    const add = [Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST].map(
+        direction => garden.peek(cur, direction)).filter(
+        plant => plant?.name !== plantName).length;
 
-        // console.log({ acc, cur, add });
-        return acc + add;
-    }, 0);
-    return perimeter;
-};
+    return acc + add;
+}, 0);
 
 type Edge = {
     direction: Direction;

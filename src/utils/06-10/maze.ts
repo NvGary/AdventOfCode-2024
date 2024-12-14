@@ -69,7 +69,6 @@ export const createDejavu = (map: ReturnType<typeof loadFromFile>): number => {
 
                 if (isLooping) {
                     ++count;
-                    // console.log(`--- LOOPING ${count} ---`);
                 }
             }
         }
