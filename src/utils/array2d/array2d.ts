@@ -19,7 +19,7 @@ const step: Array<(coords: Coords) => Coords> = [
 
 type fnConvert<T> = (v: string) => T;
 
-export class Array2D<T> {
+export class Array2D<T = unknown> {
     private impl: Grid<T> = [];
     private size: Coords = { i: 0, j: 0 };
     private conv: fnConvert<T>;
@@ -29,12 +29,24 @@ export class Array2D<T> {
     }
 
     public get grid(): Grid<T> {
-        return this.impl.map(r => r.map(c => c));
+        return this.impl;
     }
 
-    public loadFromFile(filename: string): void {
+    public loadFromFile(filename: string): Array2D<T> {
         this.impl = readFileByLine<T[]>(filename, line => Array.from(line).map(this.conv));
         this.setSize();
+
+        return this;
+    }
+
+    public fill(size: Coords, value: T): Array2D<T> {
+        this.impl = Array(size.i);
+        for (let i = 0; i < this.impl.length; ++i) {
+            this.impl[i] = Array(size.j).fill(value);
+        }
+        this.setSize();
+
+        return this;
     }
 
     private setSize(): void {
@@ -54,6 +66,11 @@ export class Array2D<T> {
         const j = this.impl[i].findIndex(col => col === item);
 
         return { i, j };
+    }
+
+    public contains(items: T[]): boolean {
+        const searchString = items.join('');
+        return this.grid.flat().join('').includes(searchString);
     }
 
     public at(coords: Coords): T | null {
@@ -91,6 +108,15 @@ export class Array2D<T> {
         }
 
         return this.at(at);
+    }
+
+    public translate(from: Coords, translation: Coords): Coords {
+        const i = (from.i + translation.i) % this.size.i;
+        const j = (from.j + translation.j) % this.size.j;
+        return {
+            i: i < 0 ? i + this.size.i : i,
+            j: j < 0 ? j + this.size.j : j,
+        };
     }
 }
 
