@@ -32,7 +32,7 @@ export default tseslint.config(
     },
     {
     // Enable debugging rules
-        files: ['**/output/*.ts', '**/index.ts'],
+        files: ['**/output/**/*', '**/index.ts'],
         rules: {
             'no-console': 'off',
         }
