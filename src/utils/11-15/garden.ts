@@ -1,5 +1,4 @@
-import { Array2D, type Coords, Direction } from '../array2d';
-import { onlyUniqueCoords } from '../array2d/array2d';
+import { Array2D, type Coords, Direction, onlyUniqueCoords } from '../array2d';
 
 type Plot = {
     plantName: string;

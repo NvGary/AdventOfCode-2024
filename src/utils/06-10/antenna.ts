@@ -1,5 +1,4 @@
-import { type Coords, StringArray2D } from '../array2d';
-import { onlyUniqueCoords } from '../array2d/array2d';
+import { type Coords, StringArray2D, onlyUniqueCoords } from '../array2d';
 
 export const loadFromFile = (filename: string): StringArray2D => {
     const grid = new StringArray2D();

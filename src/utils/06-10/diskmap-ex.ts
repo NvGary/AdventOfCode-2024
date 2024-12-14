@@ -1,5 +1,5 @@
-import { FREE_BLOCK, FreeBlocks } from './freeBlocks';
 import type { DiskMap } from './diskmap.types';
+import { FREE_BLOCK, FreeBlocks } from './freeBlocks';
 
 // Const toString = (disk: DiskMap): string => disk.map<string>(block => `${block.fileId ?? '.'}`).join('');
 

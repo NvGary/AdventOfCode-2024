@@ -1,8 +1,8 @@
 /* eslint-disable @stylistic/array-element-newline */
-import type { DiskMap } from './diskmap.types';
-import { FREE_BLOCK } from './freeBlocks';
 import { checksum } from './diskmap';
 import { defragment } from './diskmap-ex';
+import type { DiskMap } from './diskmap.types';
+import { FREE_BLOCK } from './freeBlocks';
 
 const diskMap = [
     { fileId: 0 }, { fileId: 0 },

@@ -4,6 +4,7 @@ import eslint from '@eslint/js';
 import jestPlugin from 'eslint-plugin-jest';
 import stylistic from '@stylistic/eslint-plugin';
 import tseslint from 'typescript-eslint';
+import importPlugin from 'eslint-plugin-import';
 
 export default tseslint.config(
     {
@@ -16,6 +17,8 @@ export default tseslint.config(
     }),
     eslint.configs.all,
     tseslint.configs.recommended,
+    importPlugin.flatConfigs.recommended,
+    importPlugin.flatConfigs.typescript,
     {
     // Disable type-aware linting on JS files
         extends: [tseslint.configs.disableTypeChecked],
@@ -28,14 +31,14 @@ export default tseslint.config(
         rules: {
             'init-declarations': 'off',
             'max-lines-per-function': 'off',
-        }
+        },
     },
     {
     // Enable debugging rules
         files: ['**/output/**/*', '**/index.ts'],
         rules: {
             'no-console': 'off',
-        }
+        },
     },
     {
     // Custom rules
@@ -54,18 +57,36 @@ export default tseslint.config(
                     destructuredArrayIgnorePattern: '^_',
                     ignoreRestSiblings: true,
                     varsIgnorePattern: '^_',
-                }
+                },
             ],
             'array-callback-return': 'error',
             'arrow-body-style': ['error', 'as-needed'],
             'camelcase': ['error', { allow: ['_impl$'] }],
-            'capitalized-comments': ['error', 'always', {
-                ignoreConsecutiveComments: true,
-                ignorePattern: 'console',
-            }],
+            'capitalized-comments': [
+                'error',
+                'always',
+                {
+                    ignoreConsecutiveComments: true,
+                    ignorePattern: 'console',
+                },
+            ],
             'curly': 'error',
             'eqeqeq': 'error',
             'id-length': 'off',
+            'import/order': ['error', {
+                groups: [
+                    // Imports of builtins are first
+                    'builtin',
+                    // Then sibling and parent imports. They can be mingled together
+                    'sibling',
+                    'parent',
+                    // Then index file imports
+                    'index',
+                    // Then any arcane TypeScript imports
+                    'object',
+                    // Then the omitted imports: internal, external, type, unknown
+                ],
+            }],
             'max-statements': 'error',
             'no-eval': 'error',
             'no-magic-numbers': 'off',
@@ -78,8 +99,25 @@ export default tseslint.config(
             'prefer-const': 'error',
             'prefer-destructuring': 'warn',
             'radix': 'warn',
-            'sort-imports': 'warn',
+            // 'sort-imports': [
+            //     'error',
+            //     {
+            //         allowSeparatedGroups: false,
+            //         ignoreCase: true,
+            //         ignoreDeclarationSort: false,
+            //         ignoreMemberSort: false,
+            //         memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+            //     },
+            // ],
+            'sort-imports':
+            [
+                'error',
+                {
+                    ignoreCase: false,
+                    ignoreDeclarationSort: true
+                }
+            ],
             'sort-vars': 'error',
-        }
+        },
     }
 );

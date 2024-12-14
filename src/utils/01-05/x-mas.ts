@@ -1,5 +1,5 @@
-import { Coords } from '../array2d';
 import { type loadFromFile } from './word-search';
+import { Coords } from '../array2d';
 
 const match = ({ grid }: ReturnType<typeof loadFromFile>, { i, j }: Coords, word: string): number => {
     const matches: typeof grid = [];

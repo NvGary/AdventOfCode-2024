@@ -1,5 +1,5 @@
-import { Array2D } from '../array2d';
 import { loadFromFile, patrol, safetyFactor } from './security';
+import { Array2D } from '../array2d';
 
 describe('security utils', () => {
     let robots: ReturnType<typeof loadFromFile>;
