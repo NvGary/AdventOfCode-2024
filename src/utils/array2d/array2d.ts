@@ -78,7 +78,6 @@ export class Array2D<T = unknown> {
             return null;
         }
 
-        // console.log({ coords });
         return this.impl[coords.i][coords.j];
     }
 

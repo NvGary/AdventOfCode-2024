@@ -1,14 +1,3 @@
-export { day01 } from './day01';
-export { day02 } from './day02';
-export { day03 } from './day03';
-export { day04 } from './day04';
-export { day05 } from './day05';
-export { day06 } from './day06';
-export { day07 } from './day07';
-export { day08 } from './day08';
-export { day09 } from './day09';
-export { day10 } from './day10';
-export { day11 } from './day11';
-export { day12 } from './day12';
-export { day13 } from './day13';
-export { day14 } from './day14';
+export * from './01-05';
+export * from './06-10';
+export * from './11-15';
