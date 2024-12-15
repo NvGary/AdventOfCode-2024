@@ -4,12 +4,12 @@ describe('word search utils', () => {
     let grid: ReturnType<typeof loadFromFile>;
 
     beforeEach(() => {
-        grid = loadFromFile('./lib/test/word-search.txt');
+        grid = loadFromFile('./lib/01-05/test/word-search.txt');
     });
 
     describe('function loadFromFile', () => {
         it('loads data correctly', () => {
-            const { grid: data } = loadFromFile('./lib/test/word-search.txt');
+            const { grid: data } = loadFromFile('./lib/01-05/test/word-search.txt');
             expect(data).toHaveLength(10);
             data.forEach(row => {
                 expect(row).toHaveLength(10);

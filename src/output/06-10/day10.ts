@@ -3,7 +3,7 @@ import { findTrails, getTrailHeads, loadFromFile } from '../../utils/06-10/hikin
 export const day10 = () => {
     console.log('--- Day 10: Hoof It ---');
 
-    const map = loadFromFile('./lib/topology.txt');
+    const map = loadFromFile('./lib/06-10/topology.txt');
     const trailHeads = getTrailHeads(map);
 
     // 746

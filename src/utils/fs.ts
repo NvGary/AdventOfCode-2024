@@ -3,12 +3,13 @@ import fs from 'fs';
 type Callback<T> = (line: string) => T;
 
 /**
- * Processes the supplied  {@link filename} in batches, invoking {@link processLine} for every line read.
+ * Processes the supplied {@link filename}, invoking {@link processLine} for every line read.
  * Blank lines are not sent to {@link processLine}.
  *
  * @param {string} filename Name of the file to process. Path is relative to cwd
  * @param {Callback} processLine Callback to invoke for every line read
  * @returns {T} Array of {@link T}
+ * @template T - Type to be parsed. If this is an array type, consider using Array2D instead of this method.
  */
 export const readFileByLine = <T>(filename: string, processLine: Callback<T>): NonNullable<T>[] => {
     const res: T[] = [];
@@ -25,7 +26,7 @@ export const readFileByLine = <T>(filename: string, processLine: Callback<T>): N
 type BatchCallback<T> = (lines: string[]) => T;
 
 /**
- * Processes the supplied  {@link filename} in batches, invoking {@link processBatch} once for every {@link batchSize} lines read
+ * Processes the supplied {@link filename} in batches, invoking {@link processBatch} once for every {@link batchSize} lines read
  * Blank lines are not sent to {@link processBatch}.
  *
  * @param {string} filename Name of the file to process. Path is relative to cwd

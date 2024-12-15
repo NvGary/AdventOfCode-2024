@@ -11,7 +11,7 @@ describe('mul utils', () => {
     describe('function loadFromFile', () => {
         describe('commands disabled', () => {
             it('loads data correctly', () => {
-                const data = loadFromFile('./lib/test/muls.txt', false);
+                const data = loadFromFile('./lib/01-05/test/muls.txt', false);
                 expect(data).toHaveLength(4);
                 expect(data).toStrictEqual(muls);
             });
@@ -19,7 +19,7 @@ describe('mul utils', () => {
 
         describe('commands enabled', () => {
             it('loads data correctly', () => {
-                const data = loadFromFile('./lib/test/muls.txt');
+                const data = loadFromFile('./lib/01-05/test/muls.txt');
                 expect(data).toHaveLength(2);
                 expect(data).toStrictEqual([muls[0], muls[3]]);
             });

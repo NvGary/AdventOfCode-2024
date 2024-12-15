@@ -3,7 +3,7 @@ import { advanceTime, countVisited, createDejavu, loadFromFile } from '../../uti
 export const day06 = () => {
     console.log('--- Day 6: Guard Gallivant ---');
 
-    const data = loadFromFile('./lib/map.txt');
+    const data = loadFromFile('./lib/06-10/map.txt');
     const { map: res } = advanceTime(data);
 
     // 5531

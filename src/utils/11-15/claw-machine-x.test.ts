@@ -4,7 +4,7 @@ describe('claw machine utils', () => {
     let machines: ReturnType<typeof loadFromFile>;
 
     beforeEach(() => {
-        machines = loadFromFile('./lib/test/arcade.txt');
+        machines = loadFromFile('./lib/11-15/test/arcade.txt');
     });
 
     describe('function loadFromFile', () => {

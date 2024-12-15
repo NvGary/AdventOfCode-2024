@@ -3,7 +3,7 @@ import { findAntinodes, identify, loadFromFile } from '../../utils/06-10/antenna
 export const day08 = () => {
     console.log('--- Day 8: Resonant Collinearity ---');
 
-    const grid = loadFromFile('./lib/antennas.txt');
+    const grid = loadFromFile('./lib/06-10/antennas.txt');
     const antennas = identify(grid);
 
     // 344

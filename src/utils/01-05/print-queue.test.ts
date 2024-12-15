@@ -3,7 +3,7 @@ import { calculateProductionTotals, correctOrdering, hasCorrectOrdering, hasInco
 describe('print-queue utils', () => {
     describe('function loadFromFile', () => {
         it('loads ordering data correctly', () => {
-            const { ordering } = loadFromFile('./lib/test/print-queue.txt');
+            const { ordering } = loadFromFile('./lib/01-05/test/print-queue.txt');
 
             expect(ordering).toBeDefined();
             expect(ordering).toHaveLength(21);
@@ -12,7 +12,7 @@ describe('print-queue utils', () => {
         });
 
         it('loads production data correctly', () => {
-            const { production } = loadFromFile('./lib/test/print-queue.txt');
+            const { production } = loadFromFile('./lib/01-05/test/print-queue.txt');
 
             expect(production).toBeDefined();
             expect(production).toHaveLength(6);
@@ -23,7 +23,7 @@ describe('print-queue utils', () => {
 
     describe('function hasCorrectOrdering', () => {
         it('identifies production with correct ordering', () => {
-            const data = loadFromFile('./lib/test/print-queue.txt');
+            const data = loadFromFile('./lib/01-05/test/print-queue.txt');
             const production = hasCorrectOrdering(data);
 
             expect(production).toHaveLength(3);
@@ -37,7 +37,7 @@ describe('print-queue utils', () => {
 
     describe('function hasIncorrectOrdering', () => {
         it('identifies production with correct ordering', () => {
-            const data = loadFromFile('./lib/test/print-queue.txt');
+            const data = loadFromFile('./lib/01-05/test/print-queue.txt');
             const production = hasIncorrectOrdering(data);
 
             expect(production).toHaveLength(3);
@@ -63,7 +63,7 @@ describe('print-queue utils', () => {
 
     describe('function correctOrdering', () => {
         it('identifies production with correct ordering', () => {
-            const { ordering } = loadFromFile('./lib/test/print-queue.txt');
+            const { ordering } = loadFromFile('./lib/01-05/test/print-queue.txt');
             const production = correctOrdering({ ordering,
                 production: [
                     [75, 97, 47, 61, 53],
