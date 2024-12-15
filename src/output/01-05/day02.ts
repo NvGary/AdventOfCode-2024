@@ -3,7 +3,7 @@ import { isSafe, isSafeWithDampener, loadFromFile } from '../../utils/01-05/repo
 export const day02 = () => {
     console.log('--- Day 2: Red-Nosed Reports ---');
 
-    const reports = loadFromFile('./lib/reports.txt');
+    const reports = loadFromFile('./lib/01-05/reports.txt');
 
     // 526
     console.log(`Safe report count: ${reports.map(isSafe).filter(res => res).length}`);

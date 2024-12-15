@@ -3,7 +3,7 @@ import { calcDifference, calcSimilarity, loadFromFile } from '../../utils/01-05/
 export const day01 = () => {
     console.log('--- Day 1: Historian Hysteria ---');
 
-    const [left, right] = loadFromFile('./lib/location-ids.txt');
+    const [left, right] = loadFromFile('./lib/01-05/location-ids.txt');
 
     // 1320851
     console.log(`Location Id difference is: ${calcDifference(left.sort(), right.sort())}`);

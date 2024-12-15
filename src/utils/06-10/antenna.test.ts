@@ -5,7 +5,7 @@ describe('antenna utils', () => {
     let grid: ReturnType<typeof loadFromFile>;
 
     beforeEach(() => {
-        grid = loadFromFile('./lib/test/antennas.txt');
+        grid = loadFromFile('./lib/06-10/test/antennas.txt');
     });
 
     describe('function loadFromFile', () => {

@@ -5,7 +5,7 @@ const data = [125, 17];
 describe('locationId utils', () => {
     describe('function loadFromFile', () => {
         it('loads data correctly', () => {
-            const pebbles = loadFromFile('./lib/test/pebbles.txt');
+            const pebbles = loadFromFile('./lib/11-15/test/pebbles.txt');
             expect(pebbles).toHaveLength(2);
             expect(pebbles).toEqual([125, 17]);
         });

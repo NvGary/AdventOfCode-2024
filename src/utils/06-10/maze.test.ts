@@ -4,7 +4,7 @@ describe('map utils', () => {
     let grid: ReturnType<typeof loadFromFile>;
 
     beforeEach(() => {
-        grid = loadFromFile('./lib/test/map.txt');
+        grid = loadFromFile('./lib/06-10/test/map.txt');
     });
 
     describe('function loadFromFile', () => {

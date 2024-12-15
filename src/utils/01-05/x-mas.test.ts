@@ -5,7 +5,7 @@ describe('report utils', () => {
     let grid: ReturnType<typeof loadFromFile>;
 
     beforeEach(() => {
-        grid = loadFromFile('./lib/test/word-search.txt');
+        grid = loadFromFile('./lib/01-05/test/word-search.txt');
     });
 
     describe('function search', () => {

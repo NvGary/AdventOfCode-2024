@@ -4,7 +4,7 @@ describe('garden utils', () => {
     let garden: ReturnType<typeof loadFromFile>;
 
     beforeEach(() => {
-        garden = loadFromFile('./lib/test/garden.txt');
+        garden = loadFromFile('./lib/11-15/test/garden.txt');
     });
 
     describe('function loadFromFile', () => {

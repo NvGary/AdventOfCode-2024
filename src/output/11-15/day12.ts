@@ -3,7 +3,7 @@ import { calcPerimeter, countEdges, findPlots, loadFromFile } from '../../utils/
 export const day12 = () => {
     console.log('--- Day 12: Garden Groups ---');
 
-    const garden = loadFromFile('./lib/garden.txt');
+    const garden = loadFromFile('./lib/11-15/garden.txt');
 
     const plots = findPlots(garden);
 

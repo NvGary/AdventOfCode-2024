@@ -9,7 +9,7 @@ type Robot = {
 const parseRobot = (info: string): Robot => {
     const [a, b, c, d] = info.match(/[-]{0,1}\d+/gu)!;
 
-    return { position: { j: Number(a), i: Number(b) }, velocity: { j: Number(c), i: Number(d) } };
+    return { position: { i: Number(b), j: Number(a) }, velocity: { i: Number(d), j: Number(c) } };
 };
 
 export const loadFromFile = (filename: string): Robot[] => readFileByLine<Robot>(filename, parseRobot);

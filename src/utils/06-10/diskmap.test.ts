@@ -31,7 +31,7 @@ const toString = (disk: DiskMap): string => disk.map<string>(block => `${block.f
 describe('diskmap utils', () => {
     describe('function loadFromFile', () => {
         it('loads decompressed diskmap', () => {
-            const res = loadFromFile('./lib/test/diskmap.txt');
+            const res = loadFromFile('./lib/06-10/test/diskmap.txt');
 
             expect(res).toEqual(diskMap);
             expect(toString(res)).toBe('00...111...2...333.44.5555.6666.777.888899');

@@ -12,7 +12,7 @@ const reports = [
 describe('report utils', () => {
     describe('function loadFromFile', () => {
         it('loads data correctly', () => {
-            const data = loadFromFile('./lib/test/reports.txt');
+            const data = loadFromFile('./lib/01-05/test/reports.txt');
             expect(data).toHaveLength(6);
             expect(data).toStrictEqual(reports);
         });

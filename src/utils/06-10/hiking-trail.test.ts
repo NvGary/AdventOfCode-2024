@@ -5,7 +5,7 @@ describe('hiking-trail util', () => {
     let map: ReturnType<typeof loadFromFile>;
 
     beforeEach(() => {
-        map = loadFromFile('./lib/test/topology.txt');
+        map = loadFromFile('./lib/06-10/test/topology.txt');
     });
 
     describe('function loadFromFile', () => {

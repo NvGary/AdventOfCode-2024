@@ -6,7 +6,7 @@ const right = [4, 3, 5, 3, 9, 3];
 describe('locationId utils', () => {
     describe('function loadFromFile', () => {
         it('loads data correctly', () => {
-            const data = loadFromFile('./lib/test/location-ids.txt');
+            const data = loadFromFile('./lib/01-05/test/location-ids.txt');
             expect(data).toHaveLength(2);
             expect(data[0]).toStrictEqual(left);
             expect(data[1]).toStrictEqual(right);

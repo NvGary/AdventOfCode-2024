@@ -4,7 +4,7 @@ import { OPERATORS, type Operator, loadFromFile, splitCorrect } from '../../util
 export const day07 = () => {
     console.log('--- Day 7: Bridge Repair ---');
 
-    const calibrations = loadFromFile('./lib/calibrations.txt');
+    const calibrations = loadFromFile('./lib/06-10/calibrations.txt');
 
     // 12839601725877
     const { correct, incorrect } = splitCorrect(calibrations);

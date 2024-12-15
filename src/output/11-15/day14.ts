@@ -5,7 +5,7 @@ import { Array2D } from '../../utils/array2d';
 export const day14 = () => {
     console.log('--- Day 14: Restroom Redoubt ---');
 
-    const robots = loadFromFile('./lib/robots.txt');
+    const robots = loadFromFile('./lib/11-15/robots.txt');
     const grid = new Array2D<number>(() => 0).fill({ i: 103, j: 101 }, 0);
     const prediction = patrol(grid, robots, 100);
 

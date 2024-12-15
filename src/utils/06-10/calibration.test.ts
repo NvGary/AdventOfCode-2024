@@ -15,7 +15,7 @@ const data = [
 describe('calibration util', () => {
     describe('function loadFromFile', () => {
         it('loads data correctly', () => {
-            const res = loadFromFile('./lib/test/calibrations.txt');
+            const res = loadFromFile('./lib/06-10/test/calibrations.txt');
 
             expect(res).toHaveLength(9);
             expect(res[0]).toHaveProperty('value', 190);

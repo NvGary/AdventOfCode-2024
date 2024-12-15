@@ -5,14 +5,14 @@ describe('security utils', () => {
     let robots: ReturnType<typeof loadFromFile>;
 
     beforeEach(() => {
-        robots = loadFromFile('./lib/test/robots.txt');
+        robots = loadFromFile('./lib/11-15/test/robots.txt');
     });
 
     describe('function loadFromFile', () => {
         it('loads robot data', () => {
             expect(robots).toHaveLength(12);
-            expect(robots[0]).toEqual({ position: { j: 0, i: 4 }, velocity: { j: 3, i: -3 } });
-            expect(robots.pop()).toEqual({ position: { j: 9, i: 5 }, velocity: { j: -3, i: -3 } });
+            expect(robots[0]).toEqual({ position: { i: 4, j: 0 }, velocity: { i: -3, j: 3 } });
+            expect(robots.pop()).toEqual({ position: { i: 5, j: 9 }, velocity: { i: -3, j: -3 } });
         });
     });
 

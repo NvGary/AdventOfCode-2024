@@ -3,7 +3,7 @@ import { calculateProductionTotals, correctOrdering, hasCorrectOrdering, loadFro
 export const day05 = () => {
     console.log('--- Day 5: Print Queue ---');
 
-    const data = loadFromFile('./lib/print-queue.txt');
+    const data = loadFromFile('./lib/01-05/print-queue.txt');
     const production = hasCorrectOrdering(data);
     // 6612
     const subTotal = calculateProductionTotals(production);
