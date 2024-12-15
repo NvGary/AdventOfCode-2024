@@ -39,6 +39,13 @@ export class Array2D<T = unknown> {
         return this;
     }
 
+    public loadFromData(data: T[][]): Array2D<T> {
+        this.impl = data.map(r => r.map(c => c));
+        this.setSize();
+
+        return this;
+    }
+
     public fill(size: Coords, value: T): Array2D<T> {
         this.impl = Array(size.i);
         for (let i = 0; i < this.impl.length; ++i) {
@@ -66,6 +73,19 @@ export class Array2D<T = unknown> {
         const j = this.impl[i].findIndex(col => col === item);
 
         return { i, j };
+    }
+
+    public findAll(item: T): Coords[] {
+        const res = [];
+        for (let i = 0; i < this.size.i; ++i) {
+            for (let j = 0; j < this.size.j; ++j) {
+                if (this.grid[i][j] === item) {
+                    res.push({ i, j });
+                }
+            }
+        }
+
+        return res;
     }
 
     public contains(items: T[]): boolean {
