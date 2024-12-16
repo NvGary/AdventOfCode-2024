@@ -1,4 +1,4 @@
-import { OPERATORS, type Operator, loadFromFile, splitCorrect } from '../../utils/06-10/calibration';
+import { loadFromFile, type Operator, OPERATORS, splitCorrect } from '../../utils/06-10/calibration';
 
 // eslint-disable-next-line max-statements
 export const day07 = () => {
