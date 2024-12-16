@@ -25,6 +25,7 @@ const findUnallocated = (garden: Garden, plantName: Plant['name'], pos: Coords):
         .filter(({ plant }) => plant && plant.name === plantName && Boolean(plant.plot) === false)
         .map(({ direction }) => ({ direction, pos })) as Required<{ direction: Direction; pos: Coords }[]>;
 
+/* eslint-disable no-invalid-this */
 // eslint-disable-next-line func-style
 function expand(this: Plot, garden: Garden): Plot {
     const unallocated: ReturnType<typeof findUnallocated> = findUnallocated(garden, this.plantName, this.coords[0]);
@@ -42,6 +43,7 @@ function expand(this: Plot, garden: Garden): Plot {
     this.coords = this.coords.filter(onlyUniqueCoords);
     return this;
 };
+/* eslint-enable no-invalid-this */
 
 // eslint-disable-next-line max-statements
 export const findPlots = (garden: Garden): Plot[] => {
