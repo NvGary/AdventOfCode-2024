@@ -113,7 +113,7 @@ export default tseslint.config(
             [
                 'error',
                 {
-                    ignoreCase: false,
+                    ignoreCase: true,
                     ignoreDeclarationSort: true
                 }
             ],

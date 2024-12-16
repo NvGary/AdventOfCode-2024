@@ -1,4 +1,4 @@
-import { OPERATORS, getCorrect, loadFromFile } from './calibration';
+import { getCorrect, loadFromFile, OPERATORS } from './calibration';
 
 const data = [
     { ordinals: [10, 19], value: 190 },
