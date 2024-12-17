@@ -64,6 +64,39 @@ export class Apu {
         return res.join(',');
     }
 
+    // eslint-disable-next-line max-statements
+    public processClone(instructions: APUData['bytecode']): string {
+        const res = [];
+        let pointer = 0;
+        while (pointer < instructions.length) {
+            const [op, combo] = instructions.slice(pointer, pointer + 2);
+            const { output, jump } = this.OPERATORS[op as OpCode].bind(this)(combo);
+            if (jump === NO_JUMP) {
+                pointer += 2;
+            }
+            else {
+                pointer = jump;
+            }
+
+            if (output.length) {
+                res.push(...output);
+
+                if (res.length > instructions.length) {
+                    // Abort
+                    return '';
+                }
+
+                if (res.slice(0, res.length).join('') !== instructions.slice(0, res.length).join('')) {
+                    // Abort
+                    // console.log({ res: res.slice(0, res.length).join(''), inst: instructions.slice(0, res.length).join('') });
+                    return '';
+                }
+            }
+        }
+
+        return res.join(',');
+    }
+
     private operand(bytecode: number): FnCombo {
         switch (bytecode) {
             case 4:
@@ -96,13 +129,17 @@ export class Apu {
     private opBXL(literal: number): OpResult {
         const [, xor] = this.registers;
         // eslint-disable-next-line no-bitwise
-        this.registers[1] = xor ^ literal;
+        this.registers[1] = Number(BigInt(xor) ^ BigInt(literal));
         return { output: [], jump: NO_JUMP };
     };
 
     private opBST(combo: number): OpResult {
         const value = this.operand(combo)();
-        this.registers[1] = value % 8;
+        let mod = value % 8;
+        if (mod < 0) {
+            mod += 8;
+        }
+        this.registers[1] = mod;
 
         return { output: [], jump: NO_JUMP };
     };
@@ -120,14 +157,18 @@ export class Apu {
     private opBXC(_: number): OpResult {
         const [, xorX, xorY] = this.registers;
         // eslint-disable-next-line no-bitwise
-        this.registers[1] = xorX ^ xorY;
+        this.registers[1] = Number(BigInt(xorX) ^ BigInt(xorY));
         return { output: [], jump: NO_JUMP };
     };
 
     private opOUT(combo: number): OpResult {
         const value = this.operand(combo)();
 
-        return { output: [value % 8], jump: NO_JUMP };
+        let mod = value % 8;
+        if (mod < 0) {
+            mod += 8;
+        }
+        return { output: [mod], jump: NO_JUMP };
     };
 
     private opBDV(combo: number): OpResult {

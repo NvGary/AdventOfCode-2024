@@ -192,4 +192,21 @@ describe('apu utils', () => {
             expect(output).toBe('4,6,3,5,6,3,5,2,1,0');
         });
     });
+
+    describe('function processClone', () => {
+        it('determines the correct value for register A', () => {
+            let i = -1;
+            let abort = false;
+
+            while (!abort && i < 1000000) {
+                ++i;
+                const apu = new Apu([i, 0, 0]);
+                const output = apu.processClone([0, 3, 5, 4, 3, 0]);
+
+                abort = output === '0,3,5,4,3,0';
+            }
+
+            expect(i).toBe(117440);
+        });
+    });
 });
