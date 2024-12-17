@@ -4,7 +4,7 @@ import eslint from '@eslint/js';
 import jestPlugin from 'eslint-plugin-jest';
 import stylistic from '@stylistic/eslint-plugin';
 import tseslint from 'typescript-eslint';
-import importPlugin from 'eslint-plugin-import';
+import * as importPlugin from 'eslint-plugin-import';
 
 export default tseslint.config(
     {
@@ -17,8 +17,25 @@ export default tseslint.config(
     }),
     eslint.configs.all,
     tseslint.configs.recommended,
-    importPlugin.flatConfigs.recommended,
-    importPlugin.flatConfigs.typescript,
+    // importPlugin.flatConfigs.recommended,
+    // importPlugin.flatConfigs.typescript,
+    {
+        extends: [
+            // 'eslint:recommended',
+            importPlugin.flatConfigs?.recommended,
+            // The following lines do the trick
+            importPlugin.flatConfigs?.typescript,
+        ],
+        settings: {
+            'import/resolver': {
+                // You will also need to install and configure the TypeScript resolver
+                // See also https://github.com/import-js/eslint-import-resolver-typescript#configuration
+                typescript: true,
+                alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+                node: true,
+            },
+        },
+    },
     {
     // Disable type-aware linting on JS files
         extends: [tseslint.configs.disableTypeChecked],
@@ -117,6 +134,7 @@ export default tseslint.config(
                     ignoreDeclarationSort: true
                 }
             ],
+            'sort-keys': 'off',
             'sort-vars': 'error',
         },
     }
