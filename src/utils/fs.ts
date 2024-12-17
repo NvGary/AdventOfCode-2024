@@ -56,7 +56,7 @@ export const readFileByLineBatch = <T>(filename: string, processBatch: BatchCall
     });
 
     // Clean up any remaining lines
-    if (linesRead) {
+    if (linesRead && lines.length) {
         res.push(processBatch(lines.splice(0, lines.length)));
     }
 
