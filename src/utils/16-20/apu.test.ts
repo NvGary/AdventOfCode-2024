@@ -1,4 +1,4 @@
-import { Apu, loadFromFile } from './apu';
+import { Apu, loadFromFile, outputCopy } from './apu';
 
 const NOT_USED = -1;
 
@@ -193,20 +193,11 @@ describe('apu utils', () => {
         });
     });
 
-    describe('function processClone', () => {
+    describe('function outputCopy', () => {
         it('determines the correct value for register A', () => {
-            let i = -1;
-            let abort = false;
+            const solutions = outputCopy([0, 0, 0], [0, 3, 5, 4, 3, 0]);
 
-            while (!abort && i < 1000000) {
-                ++i;
-                const apu = new Apu([i, 0, 0]);
-                const output = apu.processClone([0, 3, 5, 4, 3, 0]);
-
-                abort = output === '0,3,5,4,3,0';
-            }
-
-            expect(i).toBe(117440);
+            expect(solutions.sort()[0]).toBe(117440);
         });
     });
 });

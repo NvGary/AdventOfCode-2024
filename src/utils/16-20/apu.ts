@@ -64,39 +64,6 @@ export class Apu {
         return res.join(',');
     }
 
-    // eslint-disable-next-line max-statements
-    public processClone(instructions: APUData['bytecode']): string {
-        const res = [];
-        let pointer = 0;
-        while (pointer < instructions.length) {
-            const [op, combo] = instructions.slice(pointer, pointer + 2);
-            const { output, jump } = this.OPERATORS[op as OpCode].bind(this)(combo);
-            if (jump === NO_JUMP) {
-                pointer += 2;
-            }
-            else {
-                pointer = jump;
-            }
-
-            if (output.length) {
-                res.push(...output);
-
-                if (res.length > instructions.length) {
-                    // Abort
-                    return '';
-                }
-
-                if (res.slice(0, res.length).join('') !== instructions.slice(0, res.length).join('')) {
-                    // Abort
-                    // console.log({ res: res.slice(0, res.length).join(''), inst: instructions.slice(0, res.length).join('') });
-                    return '';
-                }
-            }
-        }
-
-        return res.join(',');
-    }
-
     private operand(bytecode: number): FnCombo {
         switch (bytecode) {
             case 4:
@@ -192,3 +159,32 @@ export const loadFromFile = (filename: string): APUData => readFileByLineBatch<A
     registers: [registerA, registerB, registerC].map(reg => Number(reg.match(/[-]{0,1}\d+/gu)![0])),
     bytecode: bytecode.match(/[-]{0,1}\d+/gu)!.map(b => Number(b))
 }), 5)[0];
+
+export const outputCopy = (registers: number[], bytecode: number[]): number[] => {
+    const LENGTH = bytecode.length - 1;
+    const solutions = [[8 ** (LENGTH)]];
+    for (let i = 0; i <= LENGTH; ++i) {
+        const newSolutions: number[] = [];
+        solutions.pop()!.forEach(sol => {
+            const attempts = Array(8).fill(0).map((_, idx) => sol + (8 ** (LENGTH - i) * idx));
+            // console.log(attempts);
+
+            attempts.forEach(value => {
+                const target = bytecode.slice(LENGTH - i).join();
+                const apu = new Apu([value].concat(registers.slice(1)));
+                const output = apu.process(bytecode).split(',');
+
+                if (output.length) {
+                    if (output.slice(LENGTH - i).join() === target) {
+                        newSolutions.push(value);
+                    }
+                }
+            });
+        });
+
+        // console.log(newSolutions);
+        solutions.push(newSolutions);
+    }
+
+    return solutions.pop()! ?? [];
+};
