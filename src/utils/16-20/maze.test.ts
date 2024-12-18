@@ -1,4 +1,4 @@
-import { loadFromFile, Maze } from './maze';
+import { loadFromFile, CornerPriorityMaze } from './maze';
 import { onlyUniqueCoords } from '../array2d';
 
 describe('maze utils', () => {
@@ -52,7 +52,7 @@ describe('maze utils', () => {
 
     describe('function solve', () => {
         it('solves maze01', () => {
-            const maze = new Maze(loadFromFile('./lib/16-20/test/maze01.txt'));
+            const maze = new CornerPriorityMaze(loadFromFile('./lib/16-20/test/maze01.txt'));
             const sols = maze.solve();
             const cost = Math.min(...sols.map(({ cost: { corners, steps } }) => corners * 1000 + steps));
             expect(cost).toEqual(7036);
@@ -62,7 +62,7 @@ describe('maze utils', () => {
         });
 
         it('solves maze02', () => {
-            const maze = new Maze(loadFromFile('./lib/16-20/test/maze02.txt'));
+            const maze = new CornerPriorityMaze(loadFromFile('./lib/16-20/test/maze02.txt'));
             const sols = maze.solve();
 
             const cost = Math.min(...sols.map(({ cost: { corners, steps } }) => corners * 1000 + steps));
