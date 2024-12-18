@@ -101,12 +101,13 @@ export class Array2D<T = unknown> {
         return this.impl[coords.i][coords.j];
     }
 
-    public mark(coords: Coords, value: T): void {
+    public mark(coords: Coords, value: T): boolean {
         if (this.validateBounds(coords) === false) {
-            return;
+            return false;
         }
 
         this.impl[coords.i][coords.j] = value;
+        return true;
     }
 
     public step(from: Coords, direction: Direction): Coords | null {

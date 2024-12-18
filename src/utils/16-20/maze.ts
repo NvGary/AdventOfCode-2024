@@ -35,18 +35,30 @@ export const onlyUniquePaths = (value: Path, index: number, array: Path[]): bool
     return resIndex === index;
 };
 
+export enum MazeAlgorithm {
+    MINIMUM_PATH,
+    MINIMUM_CORNERS
+}
+
 export class Maze {
     private grid: StringArray2D;
     private solutions: Solution[];
+    private eliminated: Coords[];
 
     public constructor(grid: StringArray2D) {
         this.grid = grid;
         this.solutions = [];
+        this.eliminated = [];
     }
 
-    public solve(): Solution[] {
+    // eslint-disable-next-line max-statements
+    public solve({ start, end, useAlgorithm } = { start: this.grid.find(Legend.START), end: this.grid.find(Legend.END), useAlgorithm: MazeAlgorithm.MINIMUM_CORNERS }): Solution[] {
         this.solutions = [];
-        const start = this.grid.find(Legend.START);
+        this.eliminated = [];
+
+        if (!(this.grid.mark(start, Legend.START) && this.grid.mark(end, Legend.END))) {
+            return [];
+        }
 
         const paths: Path[][] = [[
             { pos: start, facing: Direction.EAST, cost: { corners: 0, steps: 0 }, route: [start], mergedRoutes: [] },
@@ -55,18 +67,34 @@ export class Maze {
             { pos: start, facing: Direction.NORTH, cost: { corners: 1, steps: 0 }, route: [start], mergedRoutes: [] }
         ]];
 
+        const algorithm = useAlgorithm === MazeAlgorithm.MINIMUM_CORNERS ? this.exploreByCorners.bind(this) : this.exploreBySteps.bind(this);
+
         let iterations = 0;
         while (this.solutions.length === 0 && iterations < 1000) {
-            const newPaths = paths.pop()!.flatMap(this.explore.bind(this));
-            paths.push(newPaths.sort((a, b) => a.pos.i - b.pos.j && a.pos.j - b.pos.j && a.facing - b.facing && a.cost.corners - b.cost.corners && a.cost.steps - b.cost.steps).filter(onlyUniquePaths));
+            const oldPaths = paths.pop() ?? [];
+            this.eliminated.push(...oldPaths.map(({ pos }) => pos));
+
+            const newPaths = oldPaths.flatMap(algorithm);
+            paths.push(this.removeEliminated(newPaths.sort((a, b) => a.pos.i - b.pos.j && a.pos.j - b.pos.j && a.facing - b.facing && a.cost.corners - b.cost.corners && a.cost.steps - b.cost.steps).filter(onlyUniquePaths)));
             ++iterations;
         }
 
+        // console.log({ solutions: this.solutions, iterations, paths: paths[0].length });
+
+        // return [{
+        //     route: paths[0][0].route,
+        //     cost: paths[0][0].cost,
+        //     mergedRoutes: [],
+        // }];
         return this.solutions;
     }
 
+    private removeEliminated(paths: Path[]): Path[] {
+        return paths.filter(({ pos }) => this.eliminated.some(ePos => ePos.i === pos.i && ePos.j === pos.j) === false);
+    }
+
     // eslint-disable-next-line max-statements
-    private explore(path: Path): Path[] {
+    private exploreByCorners(path: Path): Path[] {
         const paths: Path[] = [];
 
         const { facing, cost: { corners } } = path;
@@ -74,7 +102,7 @@ export class Maze {
         let { steps } = path.cost;
         const route = path.route.concat([]);
 
-        while (this.grid.peek(pos, facing) !== Legend.WALL) {
+        while (![null, Legend.WALL as string].includes(this.grid.peek(pos, facing))) {
             pos = this.grid.step(pos, facing)!;
             route.push(pos);
             ++steps;
@@ -95,15 +123,52 @@ export class Maze {
         return paths;
     }
 
+    private exploreBySteps(path: Path): Path[] {
+        const { facing, cost: { corners } } = path;
+        const pos = { ...path.pos };
+        const steps = path.cost.steps + 1;
+        const route = path.route.concat([]);
+
+        const availabeSteps = this.getAvailableTurns(pos, facing);
+        const newPaths = availabeSteps.concat(facing).map(nowFacing => {
+            if ([null, Legend.WALL as string].includes(this.grid.peek(pos, nowFacing))) {
+                return null;
+            }
+
+            const newPos = this.grid.step(pos, nowFacing);
+            if (newPos !== null) {
+                route.push(pos);
+
+                if (this.grid.at(newPos) === Legend.END) {
+                    this.setSolution({ cost: { ...path.cost, steps }, route, mergedRoutes: path.mergedRoutes.map(m => m.concat([])) });
+                    return null;
+                }
+
+                return {
+                    pos: newPos,
+                    facing: nowFacing,
+                    cost: { corners: facing === nowFacing ? corners : corners + 1, steps },
+                    route: route.concat([]),
+                    mergedRoutes: path.mergedRoutes.map(m => m.concat([]))
+                };
+            }
+
+            return null;
+        }).filter(n => n !== null) as Path[];
+
+        // console.log(JSON.stringify(newPaths));
+        return newPaths ?? [];
+    }
+
     private getAvailableTurns(pos: Coords, facing: Direction): Direction[] {
         const turns = [];
         const LEFT = (facing + 3) % 4;
         const RIGHT = (facing + 1) % 4;
 
-        if ((this.grid.peek(pos, LEFT) !== Legend.WALL)) {
+        if (![null, Legend.WALL as string].includes(this.grid.peek(pos, LEFT))) {
             turns.push(LEFT);
         }
-        if ((this.grid.peek(pos, RIGHT) !== Legend.WALL)) {
+        if (![null, Legend.WALL as string].includes(this.grid.peek(pos, RIGHT))) {
             turns.push(RIGHT);
         }
 
