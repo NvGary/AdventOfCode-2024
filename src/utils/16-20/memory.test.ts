@@ -63,8 +63,8 @@ describe('memory utils', () => {
     describe('function determineMaxCorruption', () => {
         it('correctly identifies byte (1,6)', () => {
             const memory = new StringArray2D().fill({ i: 7, j: 7 }, FREEMEM);
-            const corrupted = corrupt(memory, bytes, 20);
-            const byte = determineMaxCorruption(corrupted, bytes.slice(20), { start: { i: 0, j: 0 }, end: { i: 6, j: 6 } });
+            const corrupted = corrupt(memory, bytes, 12);
+            const byte = determineMaxCorruption(corrupted, bytes.slice(12), { start: { i: 0, j: 0 }, end: { i: 6, j: 6 } });
 
             expect(byte).not.toBeNull();
             expect(byte).toEqual({ i: 1, j: 6 });

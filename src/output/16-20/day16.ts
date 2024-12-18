@@ -1,6 +1,6 @@
 import { timings } from '../../utils/test/utils';
 import { onlyUniqueCoords } from '../../utils/array2d';
-import { loadFromFile, Maze } from '../../utils/16-20/maze';
+import { loadFromFile, CornerPriorityMaze as Maze } from '../../utils/16-20/maze';
 
 export const day16 = () => {
     console.log('--- Day 16: Reindeer Maze ---');
