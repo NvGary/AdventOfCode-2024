@@ -1,5 +1,4 @@
-import { corrupt, CORRUPT, FREEMEM, loadFromFile } from './memory';
-import { Maze, MazeAlgorithm } from './maze';
+import { corrupt, CORRUPT, determineMaxCorruption, FREEMEM, loadFromFile, solveAsMaze } from './memory';
 import { onlyUniqueCoords, StringArray2D } from '../array2d';
 
 describe('memory utils', () => {
@@ -50,15 +49,25 @@ describe('memory utils', () => {
         });
     });
 
-    describe('memory corruption is a solveable maze', () => {
+    describe('function solveAsMaze', () => {
         it('calculates 22 steps', () => {
             const memory = new StringArray2D().fill({ i: 7, j: 7 }, FREEMEM);
             const corrupted = corrupt(memory, bytes, 12);
 
-            const maze = new Maze(corrupted);
-            const [{ route }] = maze.solve({ start: { i: 0, j: 0 }, end: { i: 6, j: 6 }, useAlgorithm: MazeAlgorithm.MINIMUM_PATH }).sort(({ cost: { steps: a } }, { cost: { steps: b } }) => a - b);
+            const { route } = solveAsMaze(corrupted, { start: { i: 0, j: 0 }, end: { i: 6, j: 6 } })!;
 
             expect(route.filter(onlyUniqueCoords)).toHaveLength(22);
+        });
+    });
+
+    describe('function determineMaxCorruption', () => {
+        it('correctly identifies byte (1,6)', () => {
+            const memory = new StringArray2D().fill({ i: 7, j: 7 }, FREEMEM);
+            const corrupted = corrupt(memory, bytes, 20);
+            const byte = determineMaxCorruption(corrupted, bytes.slice(20), { start: { i: 0, j: 0 }, end: { i: 6, j: 6 } });
+
+            expect(byte).not.toBeNull();
+            expect(byte).toEqual({ i: 1, j: 6 });
         });
     });
 });
