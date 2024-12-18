@@ -17,8 +17,6 @@ export default tseslint.config(
     }),
     eslint.configs.all,
     tseslint.configs.recommended,
-    // importPlugin.flatConfigs.recommended,
-    // importPlugin.flatConfigs.typescript,
     {
         extends: [
             // 'eslint:recommended',
@@ -31,7 +29,10 @@ export default tseslint.config(
                 // You will also need to install and configure the TypeScript resolver
                 // See also https://github.com/import-js/eslint-import-resolver-typescript#configuration
                 typescript: true,
-                alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+
+                // Always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+                alwaysTryTypes: true,
+
                 node: true,
             },
         },
@@ -52,7 +53,7 @@ export default tseslint.config(
     },
     {
     // Enable debugging rules
-        files: ['**/output/**/*', '**/index.ts'],
+        files: ['**/output/**/*', '**/test/**/*', '**/index.ts'],
         rules: {
             'no-console': 'off',
         },

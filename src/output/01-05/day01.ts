@@ -1,3 +1,4 @@
+import { timings } from '../../utils/test/utils';
 import { calcDifference, calcSimilarity, loadFromFile } from '../../utils/01-05/location-id';
 
 export const day01 = () => {
@@ -5,8 +6,13 @@ export const day01 = () => {
 
     const [left, right] = loadFromFile('./lib/01-05/location-ids.txt');
 
-    // 1320851
-    console.log(`Location Id difference is: ${calcDifference(left.sort(), right.sort())}`);
-    // 26859182
-    console.log(`Location Id similarity is: ${calcSimilarity(left, right)}`);
+    timings(() => {
+        // 1320851
+        console.log(`Location Id difference is: ${calcDifference(left.sort(), right.sort())}`);
+    });
+
+    timings(() => {
+        // 26859182
+        console.log(`Location Id similarity is: ${calcSimilarity(left, right)}`);
+    });
 };
