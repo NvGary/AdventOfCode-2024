@@ -54,7 +54,6 @@ describe('maze utils', () => {
         it('solves maze01', () => {
             const maze = new Maze(loadFromFile('./lib/16-20/test/maze01.txt'));
             const sols = maze.solve();
-
             const cost = Math.min(...sols.map(({ cost: { corners, steps } }) => corners * 1000 + steps));
             expect(cost).toEqual(7036);
 
