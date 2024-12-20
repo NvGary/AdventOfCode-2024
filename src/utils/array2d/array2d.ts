@@ -60,7 +60,12 @@ export class Array2D<T = unknown> {
         this.size = { i: this.impl.length, j: this.impl[0].length };
     }
 
-    private validateBounds({ i, j }: Coords): boolean {
+    private validateBounds(pos: Coords | null): boolean {
+        if (pos === null) {
+            return false;
+        }
+
+        const { i, j } = pos!;
         return i >= 0 && i <= this.size.i - 1 && j >= 0 && j <= this.size.j - 1;
     }
 
@@ -68,9 +73,15 @@ export class Array2D<T = unknown> {
         return this.size;
     }
 
-    public find(item: T): Coords {
+    public find(item: T): Coords | null {
         const i = this.impl.findIndex(row => row.includes(item));
+        if (i === -1) {
+            return null;
+        }
         const j = this.impl[i].findIndex(col => col === item);
+        if (j === -1) {
+            return null;
+        }
 
         return { i, j };
     }
@@ -93,7 +104,11 @@ export class Array2D<T = unknown> {
         return this.grid.flat().join('').includes(searchString);
     }
 
-    public at(coords: Coords): T | null {
+    public at(coords: Coords | null): T | null {
+        if (coords === null) {
+            return null;
+        }
+
         if (this.validateBounds(coords) === false) {
             return null;
         }
@@ -101,12 +116,12 @@ export class Array2D<T = unknown> {
         return this.impl[coords.i][coords.j];
     }
 
-    public mark(coords: Coords, value: T): boolean {
+    public mark(coords: Coords | null, value: T): boolean {
         if (this.validateBounds(coords) === false) {
             return false;
         }
 
-        this.impl[coords.i][coords.j] = value;
+        this.impl[coords!.i][coords!.j] = value;
         return true;
     }
 

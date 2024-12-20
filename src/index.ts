@@ -1,7 +1,7 @@
 import * as output from './output';
 
-const ENABLED = ['day01', 'day02', 'day03', 'day04', 'day05', 'day08', 'day10', 'day12', 'day13', 'day15', 'day16', 'day17', 'day18', 'day19'];
+const DISABLED = ['day06', 'day07', 'day09', 'day11', 'day14'];
 
 (() => {
-    Object.values(output).forEach(fn => ENABLED.includes(fn.name) ? (fn(), console.log('\n')) : console.log(`${fn.name} skipped ...\n`));
+    Object.values(output).forEach(fn => DISABLED.includes(fn.name) ? console.log(`${fn.name} skipped ... needs optimised ;)\n`) : (fn(), console.log('\n')));
 })();

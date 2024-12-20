@@ -12,7 +12,7 @@ export const advanceTime = (map: ReturnType<typeof loadFromFile>, noTrace: boole
     let facing = Direction.NORTH;
     // eslint-disable-next-line no-useless-assignment
     let rotated = false;
-    let position: Coords = map.find('^');
+    let position: Coords = map.find('^')!;
     const path: Array<{ coords: Coords; direction: Direction }> = [];
     const markMap = (coords: Coords, direction: Direction): boolean => {
         const { i, j } = coords;

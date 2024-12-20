@@ -6,10 +6,10 @@ export const enum Legend {
     WALL = '#',
 }
 
-export type Options = {
+export type Options = Partial<{
     start: Coords;
     end: Coords;
-};
+}>;
 
 export type Path = {
     pos: Coords;
@@ -44,7 +44,13 @@ export abstract class MazeBase {
     protected abstract explore(path: Path): Path[];
 
     // eslint-disable-next-line max-statements
-    public solve({ start, end }: Options = { start: this.grid.find(Legend.START), end: this.grid.find(Legend.END) }): Solution[] {
+    public solve(options?: Options): Solution[] {
+        const { start, end } = {
+            start: this.grid.find(Legend.START),
+            end: this.grid.find(Legend.END),
+            ...options
+        };
+
         this.solutions = [];
         this.eliminated = [];
 
@@ -52,11 +58,16 @@ export abstract class MazeBase {
             return [];
         }
 
+        // Special case => START === END
+        if (this.grid.at(start) === Legend.END) {
+            return [{ cost: { corners: 0, steps: 0 }, route: [end!], mergedRoutes: [] }];
+        }
+
         const paths: Path[][] = [[
-            { pos: start, facing: Direction.EAST, cost: { corners: 0, steps: 0 }, route: [start], mergedRoutes: [] },
-            { pos: start, facing: Direction.SOUTH, cost: { corners: 1, steps: 0 }, route: [start], mergedRoutes: [] },
-            { pos: start, facing: Direction.WEST, cost: { corners: 2, steps: 0 }, route: [start], mergedRoutes: [] },
-            { pos: start, facing: Direction.NORTH, cost: { corners: 1, steps: 0 }, route: [start], mergedRoutes: [] }
+            { pos: start!, facing: Direction.EAST, cost: { corners: 0, steps: 0 }, route: [start!], mergedRoutes: [] },
+            { pos: start!, facing: Direction.SOUTH, cost: { corners: 1, steps: 0 }, route: [start!], mergedRoutes: [] },
+            { pos: start!, facing: Direction.WEST, cost: { corners: 2, steps: 0 }, route: [start!], mergedRoutes: [] },
+            { pos: start!, facing: Direction.NORTH, cost: { corners: 1, steps: 0 }, route: [start!], mergedRoutes: [] }
         ]];
 
         while (this.solutions.length === 0 && paths[0].length) {
