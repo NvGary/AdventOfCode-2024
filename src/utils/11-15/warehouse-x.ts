@@ -183,7 +183,7 @@ const moveStack: Record<Direction, FnMoveStack> = {
 
 export const applyMovements = ({ layout, movement }: Warehouse): Layout => {
     const newLayout = new StringArray2D().loadFromData(layout.grid);
-    let posRobot = newLayout.find('@');
+    let posRobot = newLayout.find('@')!;
     // console.log({ posRobot });
 
     movement.forEach(direction => {
