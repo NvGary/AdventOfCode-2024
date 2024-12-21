@@ -25,7 +25,7 @@ export class StepPriorityMaze extends MazeBase {
                 route.push(pos);
 
                 if (this.grid.at(newPos) === Legend.END) {
-                    // this.setSolution({ cost: { ...path.cost, steps }, route, mergedRoutes: path.mergedRoutes.map(m => m.concat([])) });
+                    // This.setSolution({ cost: { ...path.cost, steps }, route, mergedRoutes: path.mergedRoutes.map(m => m.concat([])) });
                     this.setSolution({ cost: { ...path.cost, steps }, route: route.filter(onlyUniqueCoords), mergedRoutes: path.mergedRoutes.map(m => m.concat([]).filter(onlyUniqueCoords)) });
                     return null;
                 }

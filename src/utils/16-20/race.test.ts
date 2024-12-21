@@ -1,6 +1,5 @@
 import { findShortcuts, loadFromFile, solveAsMaze } from './race';
-import { Coords, StringArray2D } from '../array2d';
-import { timings } from '../../utils/test/utils';
+import { StringArray2D } from '../array2d';
 
 describe('race utils', () => {
     describe('function loadFromFile', () => {
@@ -42,28 +41,49 @@ describe('race utils', () => {
     });
 
     describe('function findShortcuts', () => {
-        it('finds the right amonut of shortcuts', () => {
-            const data = loadFromFile('./lib/16-20/test/racetrack.txt');
+        describe('with length === 2', () => {
+            it('finds the right amount of shortcuts', () => {
+                const data = loadFromFile('./lib/16-20/test/racetrack.txt');
 
-            const shortcuts = findShortcuts(data);
-            // console.log(JSON.stringify(shortcuts));
-            expect(shortcuts).toHaveLength(44);
+                const shortcuts = findShortcuts(data, {}, 2);
+                expect(shortcuts).toHaveLength(44);
+            });
+
+            it('finds all expected shortcuts', () => {
+                const data = loadFromFile('./lib/16-20/test/racetrack.txt');
+
+                const shortcuts: Record<string, ReturnType<typeof findShortcuts>[number]['coords'][]> = findShortcuts(data).reduce((acc, cur) => {
+                    const { coords: shortcut, saving } = cur;
+                    acc[String(saving)] = (acc[String(saving)] ?? []).concat(shortcut);
+
+                    return {
+                        ...acc
+                    };
+                }, {} as Record<string, ReturnType<typeof findShortcuts>[number]['coords'][]>);
+                expect(shortcuts['2']).toHaveLength(14);
+                expect(shortcuts['4']).toHaveLength(14);
+                expect(shortcuts['64']).toHaveLength(1);
+            });
         });
 
-        it('finds all expected shortcuts', () => {
-            const data = loadFromFile('./lib/16-20/test/racetrack.txt');
+        describe('with length === 20', () => {
+            it('finds all expected shortcuts', () => {
+                const data = loadFromFile('./lib/16-20/test/racetrack.txt');
 
-            const shortcuts: Record<string, ReturnType<typeof findShortcuts>[number]['coords'][]> = findShortcuts(data).reduce((acc, cur) => {
-                const { coords: shortcut, saving } = cur;
-                acc[String(saving)] = (acc[String(saving)] ?? []).concat(shortcut);
+                const filteredShortcuts = findShortcuts(data, {}, 20).filter(({ saving }) => saving >= 50);
+                const shortcuts: Record<string, ReturnType<typeof findShortcuts>[number]['coords'][]> = filteredShortcuts.reduce((acc, cur) => {
+                    const { coords: shortcut, saving } = cur;
+                    acc[String(saving)] = (acc[String(saving)] ?? []).concat(shortcut);
 
-                return {
-                    ...acc
-                };
-            }, {} as Record<string, ReturnType<typeof findShortcuts>[number]['coords'][]>);
-            expect(shortcuts['2']).toHaveLength(14);
-            expect(shortcuts['4']).toHaveLength(14);
-            expect(shortcuts['64']).toHaveLength(1);
+                    return {
+                        ...acc
+                    };
+                }, {} as Record<string, ReturnType<typeof findShortcuts>[number]['coords'][]>);
+                expect(shortcuts['50']).toHaveLength(32);
+                expect(shortcuts['52']).toHaveLength(31);
+                expect(shortcuts['74']).toHaveLength(4);
+                expect(shortcuts['76']).toHaveLength(3);
+            });
         });
     });
 });

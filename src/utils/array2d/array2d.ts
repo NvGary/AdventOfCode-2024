@@ -3,12 +3,16 @@ import { readFileByLine } from '../fs';
 export type Grid<T> = T[][];
 export type Coords = { i: number; j: number };
 
+export const onlyUniqueCoords = (value: Coords, index: number, array: Coords[]): boolean => array.findIndex(({ i, j }) => i === value.i && j === value.j) === index;
+
 export const enum Direction {
     NORTH,
     EAST,
     SOUTH,
     WEST
 }
+
+export const distance = (from: Coords, to: Coords): number => Math.abs(from.i - to.i) + Math.abs(from.j - to.j);
 
 const step: Array<(coords: Coords) => Coords> = [
     ({ i, j }) => ({ i: i - 1, j }),
@@ -153,6 +157,26 @@ export class Array2D<T = unknown> {
             j: j < 0 ? j + this.size.j : j,
         };
     }
-}
 
-export const onlyUniqueCoords = (value: Coords, index: number, array: Coords[]): boolean => array.findIndex(({ i, j }) => i === value.i && j === value.j) === index;
+    public reachable(from: Coords, steps: number): Coords[] {
+        if (this.validateBounds(from) === false) {
+            return [];
+        }
+
+        // Push 'from' coord - we'll uniqueify against this entry and slice this out at the end
+        // Alternatively we can ignore i = 0 && j = 0 in the below loops
+        const results: Coords[] = [from];
+
+        for (let i = 0; i <= steps; ++i) {
+            for (let j = 0; j <= steps - i; ++j) {
+                results.push(...[
+                    { i: from.i + i, j: from.j + j },
+                    { i: from.i - i, j: from.j - j },
+                    { i: from.i + i, j: from.j - j },
+                    { i: from.i - i, j: from.j + j },
+                ].filter(this.validateBounds.bind(this)));
+            }
+        }
+        return results.filter(onlyUniqueCoords).slice(1);
+    }
+}
