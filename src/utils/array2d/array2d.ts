@@ -12,7 +12,24 @@ export const enum Direction {
     WEST
 }
 
+const diffToDirection = (diff: Coords): Direction => ({
+    [JSON.stringify({ i: 1, j: 0 })]: Direction.NORTH,
+    [JSON.stringify({ i: 0, j: -1 })]: Direction.EAST,
+    [JSON.stringify({ i: -1, j: 0 })]: Direction.SOUTH,
+    [JSON.stringify({ i: 0, j: 1 })]: Direction.WEST,
+})[JSON.stringify(diff)];
+
 export const distance = (from: Coords, to: Coords): number => Math.abs(from.i - to.i) + Math.abs(from.j - to.j);
+const difference = (from: Coords, to: Coords): Coords => ({ i: from.i - to.i, j: from.j - to.j });
+
+export const convertToDirections = (route: Coords[]): Direction[] => {
+    const differences: Coords[] = [];
+    for (let i = 1; i < route.length; ++i) {
+        differences.push(difference(route[i - 1], route[i]));
+    }
+
+    return differences.map(diffToDirection);
+};
 
 const step: Array<(coords: Coords) => Coords> = [
     ({ i, j }) => ({ i: i - 1, j }),
