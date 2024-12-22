@@ -35,7 +35,7 @@ export abstract class MazeBase {
     private eliminated: Coords[];
 
     protected constructor(grid: StringArray2D, findPathIndexPredicate: Parameters<Path[]['findIndex']>[0]) {
-        this.grid = grid;
+        this.grid = new StringArray2D().loadFromData(grid.grid);
         this.findPathIndexPredicate = findPathIndexPredicate;
         this.solutions = [];
         this.eliminated = [];
