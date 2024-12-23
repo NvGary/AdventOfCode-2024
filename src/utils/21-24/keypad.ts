@@ -65,7 +65,7 @@ const sortPriortity0 = (a: string, b: string): number => PRIORITY_0[a] - PRIORIT
 const optimiseNumerical = (directions: string, idx: number): string => {
     // console.log({ idx, directions });
     switch (directions) {
-        // case '<<^':
+        // Case '<<^':
         //     return '^<<';
         //     break;
 
