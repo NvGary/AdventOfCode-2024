@@ -3,7 +3,7 @@ import { aggregate, getTopologies, loadFromFile, maxTopologies } from './lan';
 describe('lan utils', () => {
     describe('function loadFromFile', () => {
         it('loads connections from file', () => {
-            const connections = loadFromFile('./lib/21-24/test/connections.txt');
+            const connections = loadFromFile('./lib/21-25/test/connections.txt');
 
             expect(connections).toHaveLength(32);
             expect(connections[0]).toEqual({ from: 'kh', to: 'tc' });
@@ -13,7 +13,7 @@ describe('lan utils', () => {
 
     describe('function aggregate', () => {
         it('aggregates connections into a map', () => {
-            const connections = loadFromFile('./lib/21-24/test/connections.txt');
+            const connections = loadFromFile('./lib/21-25/test/connections.txt');
             const network = aggregate(connections);
 
             expect(network.get('aq')).toHaveLength(4);
@@ -23,7 +23,7 @@ describe('lan utils', () => {
 
     describe('function getTopologies', () => {
         it('identifies 3-length topologies', () => {
-            const connections = loadFromFile('./lib/21-24/test/connections.txt');
+            const connections = loadFromFile('./lib/21-25/test/connections.txt');
             const network = aggregate(connections);
             const topologies = getTopologies(network);
 
@@ -33,7 +33,7 @@ describe('lan utils', () => {
         });
 
         it('contains 7 topologies with the letter "t"', () => {
-            const connections = loadFromFile('./lib/21-24/test/connections.txt');
+            const connections = loadFromFile('./lib/21-25/test/connections.txt');
             const network = aggregate(connections);
             const topologies = getTopologies(network);
 
@@ -43,7 +43,7 @@ describe('lan utils', () => {
 
     describe('function maxTopologies', () => {
         it('identifies maximum topology co,de,ka,ta', () => {
-            const connections = loadFromFile('./lib/21-24/test/connections.txt');
+            const connections = loadFromFile('./lib/21-25/test/connections.txt');
             const network = aggregate(connections);
             const [topology] = maxTopologies(network).sort((a, b) => b.length - a.length);
 

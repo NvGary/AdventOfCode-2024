@@ -3,7 +3,7 @@ import { complexity, fromDirectional, fromNumerical, loadFromFile } from './keyp
 describe('keypad utils', () => {
     describe('function loadFromFile', () => {
         it('reads all available keycodes', () => {
-            const codes = loadFromFile('./lib/21-24/test/codes.txt');
+            const codes = loadFromFile('./lib/21-25/test/codes.txt');
 
             expect(codes).toHaveLength(5);
             expect(codes[0]).toBe('029A');
