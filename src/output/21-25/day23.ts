@@ -1,11 +1,11 @@
-import { aggregate, getTopologies, loadFromFile, maxTopologies } from '../../utils/21-24/lan';
+import { aggregate, getTopologies, loadFromFile, maxTopologies } from '../../utils/21-25/lan';
 import { timings } from '../../utils/test/utils';
 
 export const day23 = () => {
     console.log('--- Day 23: LAN Party ---');
 
     timings(() => {
-        const connections = loadFromFile('./lib/21-24/connections.txt');
+        const connections = loadFromFile('./lib/21-25/connections.txt');
         const network = aggregate(connections);
         const topologies = getTopologies(network);
 
@@ -14,7 +14,7 @@ export const day23 = () => {
     });
 
     timings(() => {
-        const connections = loadFromFile('./lib/21-24/connections.txt');
+        const connections = loadFromFile('./lib/21-25/connections.txt');
         const network = aggregate(connections);
 
         const topologies = maxTopologies(network).sort((a, b) => b.length - a.length);

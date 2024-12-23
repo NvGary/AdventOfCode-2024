@@ -1,10 +1,10 @@
-import { loadFromFile, predict, priceChanges } from '../../utils/21-24/market';
+import { loadFromFile, predict, priceChanges } from '../../utils/21-25/market';
 import { timings } from '../../utils/test/utils';
 
 export const day22 = () => {
     console.log('--- Day 22: Monkey Market ---');
 
-    const secrets = loadFromFile('./lib/21-24/secrets.txt');
+    const secrets = loadFromFile('./lib/21-25/secrets.txt');
 
     timings(() => {
         const predictions = secrets.map(secret => predict(secret, 2000));

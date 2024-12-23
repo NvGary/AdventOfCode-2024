@@ -3,7 +3,7 @@ import { loadFromFile, predict, priceChanges } from './market';
 describe('market utils', () => {
     describe('function loadFromFile', () => {
         it('reads all data', () => {
-            const secrets = loadFromFile('./lib/21-24/test/secrets.txt');
+            const secrets = loadFromFile('./lib/21-25/test/secrets.txt');
 
             expect(secrets).toHaveLength(4);
             expect(secrets).toEqual([
