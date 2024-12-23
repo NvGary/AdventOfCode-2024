@@ -1,4 +1,4 @@
-import { aggregate, getTopologies, loadFromFile } from './lan';
+import { aggregate, getTopologies, loadFromFile, maxTopologies } from './lan';
 
 describe('lan utils', () => {
     describe('function loadFromFile', () => {
@@ -38,6 +38,16 @@ describe('lan utils', () => {
             const topologies = getTopologies(network);
 
             expect(topologies.filter(value => [0, 3, 6].map(d => value.charAt(d)).includes('t'))).toHaveLength(7);
+        });
+    });
+
+    describe('function maxTopologies', () => {
+        it('identifies maximum topology co,de,ka,ta', () => {
+            const connections = loadFromFile('./lib/21-24/test/connections.txt');
+            const network = aggregate(connections);
+            const [topology] = maxTopologies(network).sort((a, b) => b.length - a.length);
+
+            expect(topology).toBe('co,de,ka,ta');
         });
     });
 });

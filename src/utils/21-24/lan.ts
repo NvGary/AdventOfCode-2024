@@ -11,9 +11,6 @@ type Network = Map<Computer, Computer[]>;
 
 export const loadFromFile = (filename: string): Connection[] => readFileByLine(filename, line => {
     const [from, to] = line.split('-').sort();
-    if (from.length !== 2 || to.length !== 2) {
-        console.log('IRREGULAR LENGTH ' + from + '-' + to);
-    }
     return { from, to };
 });
 
@@ -43,6 +40,39 @@ export const getTopologies = (network: Network): string[] => {
                     }
                 });
             }
+        });
+    }
+
+    return links;
+};
+
+/* eslint-disable no-invalid-this */
+// eslint-disable-next-line func-style
+function traverse(this: Network, parents: Computer[], id: Computer): string[] {
+    const links: string[] = [id];
+
+    const onward = this.get(id) ?? [];
+    if (onward.length > 0) {
+        onward.forEach(name => {
+            const parentLinked = parents.every(key => this.get(key)!.includes(name));
+            if (parentLinked) {
+                links.push(...traverse.call(this, parents.concat(id), name).map(r => `${id},${r}`));
+            }
+        });
+    }
+
+    return links;
+}
+/* eslint-enable no-invalid-this */
+
+export const maxTopologies = (network: Network): string[] => {
+    const links: string[] = [];
+
+    const link = network[Symbol.iterator]();
+
+    for (const [key, value] of link) {
+        value.forEach(id => {
+            links.push(...traverse.call(network, [key], id).map(r => `${key},${r}`));
         });
     }
 
