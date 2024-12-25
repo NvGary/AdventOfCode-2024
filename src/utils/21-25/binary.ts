@@ -91,3 +91,48 @@ export const setAll = (registers: BinarySystem['registers'], indexor: string, va
 
     return registers;
 };
+
+export const traverse = (instructions: BinarySystem['instructions'], registerName: string): Instruction[] => {
+    const res: Instruction[] = [];
+    instructions.forEach(instruction => {
+        const { inputs: [regA, regB], output } = instruction;
+        if ([regA, regB, output].includes(registerName)) {
+            res.push(instruction);
+        }
+    });
+
+    res.forEach(inst => {
+        inst.inputs.concat(inst.output).forEach(name => {
+            instructions.forEach(instruction => {
+                const { inputs: [regA, regB], output } = instruction;
+                if ([regA, regB, output].includes(name)) {
+                    res.push(instruction);
+                }
+            });
+        });
+    });
+
+    res.forEach(inst => {
+        inst.inputs.concat(inst.output).forEach(name => {
+            instructions.forEach(instruction => {
+                const { inputs: [regA, regB], output } = instruction;
+                if ([regA, regB, output].includes(name)) {
+                    res.push(instruction);
+                }
+            });
+        });
+    });
+
+    res.forEach(inst => {
+        inst.inputs.concat(inst.output).forEach(name => {
+            instructions.forEach(instruction => {
+                const { inputs: [regA, regB], output } = instruction;
+                if ([regA, regB, output].includes(name)) {
+                    res.push(instruction);
+                }
+            });
+        });
+    });
+
+    return Array.from(new Set(res));
+};

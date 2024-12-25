@@ -1,4 +1,4 @@
-import { applyInstructions, loadFromFile, readAll, setAll } from '../../utils/21-25/binary';
+import { applyInstructions, loadFromFile, readAll, setAll, traverse } from '../../utils/21-25/binary';
 import { timings } from '../../utils/test/utils';
 
 export const day24 = () => {
@@ -30,8 +30,12 @@ export const day24 = () => {
                 incorrect.push(i);
             }
 
-            console.log('--- ' + i + ' ---');
-            console.log(readAll(registers, 'z'));
+            const inst = traverse(system.instructions, `z${numeral}`);
+            // if (inst.length !== 8) {
+                console.log(i, inst);
+            // }
+            // console.log('--- ' + i + ' ---');
+            // console.log(readAll(registers, 'z'));
         }
 
         console.log(incorrect);
